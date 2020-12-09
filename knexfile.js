@@ -1,4 +1,5 @@
 // Update with your config settings.
+const dotenv = require('dotenv').config({ path: './configs.env' })
 
 module.exports = {
 

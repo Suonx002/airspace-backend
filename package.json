@@ -5,11 +5,11 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "server": "NODE_ENV=development nodemon server.js",
-    "knex:make": "NODE_ENV=development knex migrate:make --knexfile knexfile.js",
-    "knex:migrate": "NODE_ENV=development knex migrate:latest --knexfile knexfile.js",
-    "knex:rollback": "NODE_ENV=development knex migrate:rolback --knexfile knexfile.js",
-    "knex:seed": "NODE_ENV=development knex seed:run --knexfile knexfile.js"
+    "server": "nodemon server.js",
+    "knex:make": "knex migrate:make --knexfile ./knexfile.js",
+    "knex:migrate": "knex migrate:latest --knexfile ./knexfile.js",
+    "knex:rollback": "knex migrate:rolback --knexfile ./knexfile.js",
+    "knex:seed": "knex seed:run --knexfile ./knexfile.js"
   },
   "keywords": [],
   "author": "",
