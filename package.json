@@ -2,9 +2,14 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "server": "NODE_ENV=development nodemon server.js",
+    "knex:make": "NODE_ENV=development knex migrate:make --knexfile knexfile.js",
+    "knex:migrate": "NODE_ENV=development knex migrate:latest --knexfile knexfile.js",
+    "knex:rollback": "NODE_ENV=development knex migrate:rolback --knexfile knexfile.js",
+    "knex:seed": "NODE_ENV=development knex seed:run --knexfile knexfile.js"
   },
   "keywords": [],
   "author": "",
