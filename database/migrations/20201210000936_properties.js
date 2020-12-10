@@ -1,11 +1,15 @@
 const Knex = require('knex');
-const tableNames = require('../../constants/tableNames')
+const tableNames = require('../../utils/constants/tableNames')
+const defaultTableColumns = require('../../utils/methods/defaultTableColumns')
+
 
 
 /**
  * 
  * @param {Knex} knex 
  */
+
+
 
 
 exports.up = async knex => knex.schema.createTable(tableNames.properties, table => {
@@ -22,6 +26,7 @@ exports.up = async knex => knex.schema.createTable(tableNames.properties, table 
     table.integer('price').notNullable();
     table.jsonb('photos');
     table.jsonb('ratings');
+    defaultTableColumns(table)
 })
 
 exports.down = async knex => knex.schema.dropTable(tableNames.properties);

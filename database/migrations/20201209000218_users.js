@@ -1,5 +1,6 @@
 const Knex = require('knex');
-const tableNames = require('../../constants/tableNames')
+const tableNames = require('../../utils/constants/tableNames')
+const defaultTableColumns = require('../../utils/methods/defaultTableColumns')
 
 /**
  * 
@@ -15,6 +16,7 @@ exports.up = knex => knex.schema.createTable(tableNames.users, table => {
     table.string('firstName').notNullable();
     table.string('lastName').notNullable();
     table.string('password').notNullable();
+    defaultTableColumns(table);
 })
 
 //down is rollback
