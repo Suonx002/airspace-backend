@@ -1,6 +1,13 @@
+const Knex = require('knex');
+const tableNames = require('../../constants/tableNames')
+
+/**
+ * 
+ * @param {Knex} knex 
+ */
 
 // up is migration 
-exports.up = knex => knex.schema.createTable('users', table => {
+exports.up = knex => knex.schema.createTable(tableNames.users, table => {
 
     table.increments();
     table.string('username').unique().notNullable();
@@ -8,10 +15,7 @@ exports.up = knex => knex.schema.createTable('users', table => {
     table.string('firstName').notNullable();
     table.string('lastName').notNullable();
     table.string('password').notNullable();
-
-    table.datetime('createdAt');
-    table.datetime('updatedAt');
 })
 
 //down is rollback
-exports.down = knex => knex.schema.dropTable('users');
+exports.down = knex => knex.schema.dropTable(tableNames.users);
