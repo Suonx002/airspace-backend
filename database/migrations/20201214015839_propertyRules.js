@@ -15,7 +15,7 @@ exports.up = async knex => await knex.schema.createTable(tableNames.propertyRule
     table.integer('minAge').notNullable();
     table.text('refundPolicy').notNullable();
     table.text('otherNotes').notNullable();
-    defaultTableColumns(table, knex);
+    tableDefaultColumns(table, knex);
     table.integer('propertyId').unsigned().notNullable();
     table.foreign('propertyId').references("id").inTable('properties');
 })

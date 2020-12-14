@@ -12,7 +12,7 @@ exports.up = async knex => await knex.schema.createTable(tableNames.propertyRati
     table.string('title').notNullable();
     table.enu('rating', [1, 2, 3, 4, 5]).notNullable();
     table.text('comment').notNullable();
-    defaultTableColumns(table, knex);
+    tableDefaultColumns(table, knex);
 
     table.integer('propertyId').unsigned().notNullable();
     table.foreign('propertyId').references("id").inTable('properties');

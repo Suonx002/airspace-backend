@@ -11,7 +11,7 @@ exports.up = async knex => await knex.schema.createTable(tableNames.propertyPhot
     table.increments();
     table.string('title').notNullable();
     table.string('imageUrl').notNullable();
-    defaultTableColumns(table, knex);
+    tableDefaultColumns(table, knex);
 
     table.integer('propertyId').unsigned().notNullable();
     table.foreign('propertyId').references("id").inTable('properties');
