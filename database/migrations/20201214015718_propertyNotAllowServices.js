@@ -7,7 +7,7 @@ const tableDefaultColumns = require('../../utils/methods/defaultTableColumns')
  * @param {Knex} knex 
  */
 
-exports.up = async knex => await knex.schema.createTable(tableNames.propertyFeatures, table => {
+exports.up = async knex => await knex.schema.createTable(tableNames.propertyNotAllowServices, table => {
     table.increments();
     table.string('title').notNullable();
     defaultTableColumns(table, knex);
@@ -15,4 +15,4 @@ exports.up = async knex => await knex.schema.createTable(tableNames.propertyFeat
     table.foreign('propertyId').references("id").inTable('properties');
 })
 
-exports.down = async knex => await knex.schema.dropTable(tableNames.propertyFeatures);
+exports.down = async knex => await knex.schema.dropTable(tableNames.propertyNotAllowServices);

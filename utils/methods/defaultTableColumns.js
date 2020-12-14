@@ -1,9 +1,9 @@
 const { tableName } = require("../../models/UserModel");
 
-const tableDefaultColumns = (table) => {
+const tableDefaultColumns = (table, knex) => {
 
-    table.string('createdAt');
-    table.string('updatedAt');
+    table.timestamp('createdAt').defaultTo(knex.fn.now());
+    table.timestampe('updatedAt').defaultTo(knex.fn.now());
 
 }
 

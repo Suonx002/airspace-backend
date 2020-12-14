@@ -13,7 +13,8 @@ exports.up = async knex => await knex.schema.createTable(tableNames.propertyAmen
     table.string('title').notNullable();
     table.integer('propertyId').unsigned().notNullable();
     table.foreign('propertyId').references('id').inTable('properties').onUpdate('cascade').onDelete('cascade')
-    tableDefaultColumns(table);
+    defaultTableColumns(table, knex);
+
 })
 
 exports.down = async knex => await knex.schema.dropTable(tableNames.propertyAmenities);

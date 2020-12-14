@@ -24,7 +24,8 @@ exports.up = async knex => await knex.schema.createTable(tableNames.properties, 
     table.integer('price').notNullable();
     table.integer('userId').unsigned().notNullable();
     table.foreign('userId').references('id').inTable('users').onUpdate('cascade').onDelete('cascade');
-    defaultTableColumns(table)
+    defaultTableColumns(table, knex);
+
 })
 
 exports.down = async knex => await knex.schema.dropTable(tableNames.properties);
