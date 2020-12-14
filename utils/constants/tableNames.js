@@ -8,6 +8,6 @@ module.exports = {
     propertyAllowServices: 'propertyAllowServices',
     propertyNotAllowServices: 'propertyNotAllowServices',
     propertyRules: 'propertyRules',
-    propertyAvailability: 'propertyAvailability',
+    propertyAvailabilities: 'propertyAvailabilities',
     propertyVideos: 'propertyVideos'
 }
