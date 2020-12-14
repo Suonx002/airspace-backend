@@ -8,7 +8,7 @@ const defaultTableColumns = require('../../utils/methods/defaultTableColumns')
  */
 
 // up is migration 
-exports.up = knex => knex.schema.createTable(tableNames.users, table => {
+exports.up = async knex => await knex.schema.createTable(tableNames.users, table => {
 
     table.increments();
     table.string('username').unique().notNullable();
@@ -20,4 +20,4 @@ exports.up = knex => knex.schema.createTable(tableNames.users, table => {
 })
 
 //down is rollback
-exports.down = knex => knex.schema.dropTable(tableNames.users);
+exports.down = async knex => await knex.schema.dropTable(tableNames.users);
