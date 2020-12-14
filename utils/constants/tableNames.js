@@ -1,7 +1,7 @@
 module.exports = {
     users: 'users',
     properties: 'properties',
-    amenities: 'amenities',
+    propertyAmenities: 'amenities',
     propertyFeatures: 'propertyFeatures',
     propertyServices: 'propertyServices',
     propertyRules: 'propertyRules',

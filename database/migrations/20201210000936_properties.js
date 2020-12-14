@@ -26,6 +26,7 @@ exports.up = async knex => knex.schema.createTable(tableNames.properties, table 
     table.integer('price').notNullable();
     table.jsonb('photos');
     table.jsonb('ratings');
+    table.foreign('userId').references('users.id').onUpdate('CASCADE').onDelete('CASCADE');
     defaultTableColumns(table)
 })
 
