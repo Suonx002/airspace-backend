@@ -3,15 +3,23 @@ const User = require('../models/UserModel')
 const authValidator = require('../validations/auth/authSchema')
 const jwtMethods = require('../middlewares/jwtMethods');
 const bcryptMethods = require('../utils/methods/bcryptMethods');
+const AppError = require('../utils/methods/AppError');
 const catchAsync = require('../utils/methods/catchAsync');
 
 
 exports.signup = catchAsync(async (req, res, next) => {
     const { username, email, firstName, lastName, password } = req.body;
 
+
     await authValidator.signupSchema.validate({ username, email, firstName, lastName, password });
 
-    const userExisted = await User.query().where('username', username).orWhere('email', email).first();
+
+
+    const userExisted = await User.query().where({ username }).orWhere({ email }).first();
+
+
+
+    console.log({ userExisted })
 
     if (userExisted) {
         return next(new AppError('Username or email already existed, please use a different one', 400));
@@ -27,6 +35,8 @@ exports.signup = catchAsync(async (req, res, next) => {
         lastName,
         password: hashedPassword
     });
+
+    console.log({ newUser });
 
     // remove password from output
     newUser.password = undefined;

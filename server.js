@@ -9,7 +9,8 @@ const dotenv = require('dotenv').config({ path: path.resolve(__dirname + '/confi
 const app = express();
 
 // connect model with knex
-Model.knex(knexfile[process.env.NODE_ENV]);
+const connection = Knex(knexfile[process.env.NODE_ENV || 'development'])
+Model.knex(connection);
 
 const AppError = require('./utils/methods/AppError')
 const globalErrorHandlers = require('./controllers/errorController')
