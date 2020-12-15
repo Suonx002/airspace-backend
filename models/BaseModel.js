@@ -4,15 +4,15 @@ class BaseModel extends Model {
 
 
     $beforeInsert() {
-        const now = new Date().toISOString();
+        const currentDate = new Date().toISOString();
 
-        this.createdAt = now;
-        this.updatedAt = now;
+        this.createdAt = currentDate;
+        this.updatedAt = currentDate;
     }
 
     $beforeUpdate() {
-        const now = new Date().toISOString();
-        this.updatedAt = now;
+        const currentDate = new Date().toISOString();
+        this.updatedAt = currentDate;
     }
 
 
