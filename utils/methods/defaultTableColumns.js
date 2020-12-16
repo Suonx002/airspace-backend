@@ -1,4 +1,4 @@
-const { tableName } = require("../../models/UserModel");
+const { tableName } = require("../../models/User");
 
 const tableDefaultColumns = (table, knex) => {
 

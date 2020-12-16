@@ -1,4 +1,4 @@
-const User = require('../models/UserModel')
+const User = require('../models/User')
 
 const authValidator = require('../validations/auth/authSchema')
 const jwtMethods = require('../middlewares/jwtMethods');
@@ -41,13 +41,13 @@ exports.signup = catchAsync(async (req, res, next) => {
     // remove password from output
     newUser.password = undefined;
 
-    // sign token
-
-    jwtMethods.signToken(username);
+    // sign token 
+    const token = jwtMethods.signToken(username);
 
 
     return res.status(201).json({
         status: 'success',
+        token,
         data: newUser
     })
 });

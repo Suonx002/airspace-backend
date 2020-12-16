@@ -1,30 +1,40 @@
 const path = require('path');
 const express = require('express');
-const Knex = require('knex');
-const { Model } = require('objection')
-const knexfile = require('./knexfile');
+const morgan = require('morgan');
+const compression = require('compression');
+const helmet = require('helmet');
 
 const dotenv = require('dotenv').config({ path: path.resolve(__dirname + '/configs.env') })
 
+// import database connection
+require('./database/connectDB');
+
+
+
 const app = express();
 
-// connect model with knex
-const connection = Knex(knexfile[process.env.NODE_ENV || 'development'])
-Model.knex(connection);
+
 
 const AppError = require('./utils/methods/AppError')
 const globalErrorHandlers = require('./controllers/errorController')
-const authRouter = require('./routes/authRoutes');
+const apiRouter = require('./routes');
 
 
 
 // middlewares
+if (process.env.NODE_ENV === 'development') {
+    app.use(morgan('tiny'));
+}
+
+app.use(compression());
+app.use(helmet());
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
 
-// routes
-app.use('/auth', authRouter);
+// handle all routers in ./routes/index.js
+app.use('/api/v1', apiRouter);
 
 
 // catch errors (all verbs: get post put patch , etc...)
