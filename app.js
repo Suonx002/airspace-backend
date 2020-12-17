@@ -6,24 +6,16 @@ const helmet = require('helmet');
 
 const dotenv = require('dotenv').config({ path: path.resolve(__dirname + '/configs.env') })
 
-// import database connection
-require('./database/connectDB');
-
-
-
 const app = express();
-
-
 
 const AppError = require('./utils/methods/AppError')
 const globalErrorHandlers = require('./controllers/errorController')
 const apiRouter = require('./routes');
 
 
-
 // middlewares
 if (process.env.NODE_ENV === 'development') {
-    app.use(morgan('tiny'));
+    app.use(morgan('dev'));
 }
 
 app.use(compression());
@@ -32,6 +24,15 @@ app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
+
+app.get('/favicon.ico', (req, res) => res.status(204));
+
+app.get('/', (req, res) => {
+    return res.status(200).json({
+        status: 'success',
+        message: 'Welcome to Airspace Rental homepage!'
+    })
+})
 
 // handle all routers in ./routes/index.js
 app.use('/api/v1', apiRouter);
@@ -46,7 +47,7 @@ app.use(globalErrorHandlers);
 
 
 
-
+// https://www.youtube.com/watch?v=segQTodjXsE @2:53:20
 
 
 module.exports = app;
