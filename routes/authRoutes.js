@@ -8,6 +8,8 @@ const authSchema = require('../validations/auth/authSchema')
 
 router.post('/signup', yupValidateReqBody(authSchema.signupSchema), authController.signup);
 
+router.post('/login', yupValidateReqBody(authSchema.loginSchema), authController.login);
+
 
 
 module.exports = router;

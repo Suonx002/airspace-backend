@@ -45,4 +45,27 @@ exports.signup = catchAsync(async (req, res, next) => {
 
 exports.login = catchAsync(async (req, res, next) => {
 
+    const { email, password } = req.body;
+
+
+
+    const user = await User.query().where({ email }).first();
+
+    if (!user) {
+        next(new AppError('There is no account with this email', 400));
+    }
+
+    // check if password match
+    if (!await bcryptMethods.verifyPassword(password, user.password)) {
+        next(new AppError('Email or password is invalid', 400));
+    }
+
+    // hide password
+    user.password = undefined;
+
+    return res.status(200).json({
+        status: 'success',
+        data: user
+    })
+
 })
