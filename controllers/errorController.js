@@ -22,7 +22,9 @@ const globalErrorHandlers = (err, req, res, next) => {
 
     return res.status(error.statusCode || 500).json({
         status: 'fail',
-        message: error.message || 'Server Error'
+        message: error.message || 'Server Error',
+        errors: error.errors ? error.errors : undefined
+
     })
 }
 

@@ -1,6 +1,5 @@
 const User = require('../models/User')
 
-const authValidator = require('../validations/auth/authSchema')
 const jwtMethods = require('../middlewares/jwtMethods');
 const bcryptMethods = require('../utils/methods/bcryptMethods');
 const AppError = require('../utils/methods/AppError');
@@ -8,12 +7,9 @@ const catchAsync = require('../utils/methods/catchAsync');
 
 
 exports.signup = catchAsync(async (req, res, next) => {
+    console.log('GOT INTO SIGNUP HERE')
+
     const { username, email, firstName, lastName, password } = req.body;
-
-
-    await authValidator.signupSchema.validate({ username, email, firstName, lastName, password });
-
-
 
     const userExisted = await User.query().where({ username }).orWhere({ email }).first();
 
@@ -46,3 +42,7 @@ exports.signup = catchAsync(async (req, res, next) => {
         data: newUser
     })
 });
+
+exports.login = catchAsync(async (req, res, next) => {
+
+})
