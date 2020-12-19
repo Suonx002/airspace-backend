@@ -17,10 +17,6 @@ exports.signup = catchAsync(async (req, res, next) => {
 
     const userExisted = await User.query().where({ username }).orWhere({ email }).first();
 
-
-
-    console.log({ userExisted })
-
     if (userExisted) {
         return next(new AppError('Username or email already existed, please use a different one', 400));
     }
@@ -36,7 +32,6 @@ exports.signup = catchAsync(async (req, res, next) => {
         password: hashedPassword
     });
 
-    console.log({ newUser });
 
     // remove password from output
     newUser.password = undefined;

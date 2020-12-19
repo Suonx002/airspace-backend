@@ -10,7 +10,7 @@
     "knex:migrate": "knex migrate:latest --knexfile ./knexfile.js",
     "knex:rollback": "knex migrate:rollback --knexfile ./knexfile.js",
     "knex:seed": "knex seed:run --knexfile ./knexfile.js",
-    "test": "jest"
+    "test": "jest --force-exit --detectOpenHandles"
   },
   "keywords": [],
   "author": "",

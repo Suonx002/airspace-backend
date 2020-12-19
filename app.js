@@ -7,6 +7,8 @@ const helmet = require('helmet');
 const dotenv = require('dotenv').config({ path: path.resolve(__dirname + '/configs.env') })
 
 const app = express();
+const db = require('./database/connectDB');
+
 
 const AppError = require('./utils/methods/AppError')
 const globalErrorHandlers = require('./controllers/errorController')
@@ -37,17 +39,11 @@ app.get('/', (req, res) => {
 // handle all routers in ./routes/index.js
 app.use('/api/v1', apiRouter);
 
-
 // catch errors (all verbs: get post put patch , etc...)
 app.all('*', (req, res, next) => {
     return next(new AppError(`Can't find ${req.originalUrl} on this server!`, 400));
 })
 
 app.use(globalErrorHandlers);
-
-
-
-// https://www.youtube.com/watch?v=segQTodjXsE @2:53:20
-
 
 module.exports = app;
