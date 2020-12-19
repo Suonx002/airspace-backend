@@ -10,21 +10,20 @@ describe('POST /api/v1/auth/signup', () => {
 
 
     // beforeEach & afterEach are from jest
-    beforeEach(async () => {
+    // beforeEach(async () => {
+    //     // delete users from database
+    //     await User.query().del();
+    // })
 
-        // delete users from database
-        await User.query().del();
-    })
+    const payload = {
+        username: 'user',
+        email: 'user@gmail.com',
+        password: 'test1234',
+        firstName: 'user',
+        lastName: 'one'
+    }
 
     it('should sign up a user with firstName, lastName, username, email, and password', async (done) => {
-
-        const payload = {
-            username: 'user',
-            email: 'user@gmail.com',
-            password: 'test1234',
-            firstName: 'user',
-            lastName: 'one'
-        }
 
         const res = await supertest(app)
             .post('/api/v1/auth/signup')
@@ -43,9 +42,19 @@ describe('POST /api/v1/auth/signup', () => {
         done();
 
     });
+
+    afterEach(async () => {
+
+        const { email, username } = payload;
+
+        // delete the created user for test
+        await User.query().where({ email, username }).del();
+
+    })
 });
 
 describe('POST /api/v1/auth/login', () => {
+
 
     // create new user
     const newUser = {
@@ -57,8 +66,12 @@ describe('POST /api/v1/auth/login', () => {
     }
 
     beforeEach(async () => {
-        await User.query().insert(newUser);
 
+        const hashedPassword = await bcryptMethods.hashPassword(newUser.password)
+
+        await User.query().insert({
+            ...newUser, password: hashedPassword
+        });
     });
 
     it('should login in current user', async (done) => {
@@ -72,8 +85,6 @@ describe('POST /api/v1/auth/login', () => {
             .expect(200);
 
 
-
-
         expect(res.body.data.username).toBe(username);
         expect(res.body.data.email).toBe(email);
         expect(res.body.data.password).toBe(undefined);
@@ -84,10 +95,10 @@ describe('POST /api/v1/auth/login', () => {
     })
 
     afterEach(async () => {
-        await User.query().delete();
+        // delete the user for this test
+        const { username, email } = newUser;
+
+        await User.query().where({ username, email }).del();
     })
-
-
-
 
 })

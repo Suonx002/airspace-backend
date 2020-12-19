@@ -7,7 +7,6 @@ const catchAsync = require('../utils/methods/catchAsync');
 
 
 exports.signup = catchAsync(async (req, res, next) => {
-    console.log('GOT INTO SIGNUP HERE')
 
     const { username, email, firstName, lastName, password } = req.body;
 
@@ -52,12 +51,18 @@ exports.login = catchAsync(async (req, res, next) => {
     const user = await User.query().where({ email }).first();
 
     if (!user) {
-        next(new AppError('There is no account with this email', 400));
+        return next(new AppError('There is no account with this email', 400));
     }
 
+    const confirmPassword = await bcryptMethods.verifyPassword(password, user.password);
+    console.log({
+        confirmPassword,
+        userPassword: user.password
+    })
+
     // check if password match
-    if (!await bcryptMethods.verifyPassword(password, user.password)) {
-        next(new AppError('Email or password is invalid', 400));
+    if (!confirmPassword) {
+        return next(new AppError('Email or password is invalid', 400));
     }
 
     // hide password
@@ -65,7 +70,8 @@ exports.login = catchAsync(async (req, res, next) => {
 
     return res.status(200).json({
         status: 'success',
-        data: user
+        data: user,
+        allUsers: await User.query()
     })
 
 })
