@@ -8,13 +8,6 @@ const bcryptMethods = require('../utils/methods/bcryptMethods')
 
 describe('POST /api/v1/auth/signup', () => {
 
-
-    // beforeEach & afterEach are from jest
-    // beforeEach(async () => {
-    //     // delete users from database
-    //     await User.query().del();
-    // })
-
     const payload = {
         username: 'user',
         email: 'user@gmail.com',
@@ -55,13 +48,12 @@ describe('POST /api/v1/auth/signup', () => {
 
 describe('POST /api/v1/auth/login', () => {
 
-
     // create new user
     const newUser = {
         username: 'newUser1',
         firstName: 'amy',
         lastName: 'dinh',
-        email: 'amydinh@gmail.com',
+        email: 'newUser1@gmail.com',
         password: 'test1234'
     }
 
