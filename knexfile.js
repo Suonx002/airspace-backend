@@ -25,12 +25,27 @@ module.exports = {
       directory: `${__dirname}/database/seeds`
     }
   },
+  staging: {
+    client: process.env.DB_CLIENT,
+    connection: process.env.DATABASE_URL,
+    pool: {
+      min: 2,
+      max: 18
+    },
+    migrations: {
+      tableName: 'knex_migrations',
+      directory: `${__dirname}/database/migrations`
+    },
+    seeds: {
+      directory: `${__dirname}/database/seeds`
+    }
+  },
   production: {
     client: process.env.DB_CLIENT,
     connection: process.env.DATABASE_URL,
     pool: {
       min: 2,
-      max: 10
+      max: 18
     },
     migrations: {
       tableName: 'knex_migrations',
