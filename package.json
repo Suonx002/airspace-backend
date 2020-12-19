@@ -12,6 +12,9 @@
     "knex:seed": "knex seed:run --knexfile ./knexfile.js",
     "test": "jest --force-exit --detectOpenHandles"
   },
+  "engines": {
+    "node": "^12"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
