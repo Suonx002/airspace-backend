@@ -1,6 +1,7 @@
 // Update with your config settings.
 const dotenv = require('dotenv').config({ path: './configs.env' })
 
+
 module.exports = {
 
   development: {
@@ -16,42 +17,25 @@ module.exports = {
     },
     migrations: {
       tableName: 'knex_migrations',
-      directory: './database/migrations'
+      directory: `${__dirname}/database/migrations`
     },
     seeds: {
-      directory: './database/seeds'
+      directory: `${__dirname}/database/seeds`
     }
   },
-
-  staging: {
-    client: 'postgresql',
-    connection: {
-      database: 'my_db',
-      user: 'username',
-      password: 'password'
-    },
-    pool: {
-      min: 2,
-      max: 10
-    },
-    migrations: {
-      tableName: 'knex_migrations'
-    }
-  },
-
   production: {
-    client: 'postgresql',
-    connection: {
-      database: 'my_db',
-      user: 'username',
-      password: 'password'
-    },
+    client: process.env.DB_CLIENT,
+    connection: process.env.DATABASE_URL,
     pool: {
       min: 2,
-      max: 10
+      max: 20
     },
     migrations: {
-      tableName: 'knex_migrations'
+      tableName: 'knex_migrations',
+      directory: `${__dirname}/database/migrations`
+    },
+    seeds: {
+      directory: `${__dirname}/database/seeds`
     }
   }
 
