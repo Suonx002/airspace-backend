@@ -11,7 +11,7 @@ const defaultTableColumns = require('../../utils/methods/defaultTableColumns')
 
 
 exports.up = async knex => await knex.schema.createTable(tableNames.properties, table => {
-    table.increments();
+    table.uuid('id').primary();
     table.string('slug').notNullable();
     table.string('title').unique().notNullable();
     table.string('description').notNullable();

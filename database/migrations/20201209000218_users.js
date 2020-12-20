@@ -10,7 +10,7 @@ const defaultTableColumns = require('../../utils/methods/defaultTableColumns')
 // up is migration 
 exports.up = async knex => await knex.schema.createTable(tableNames.users, table => {
 
-    table.increments();
+    table.uuid('id').primary();
     table.string('username').unique().notNullable();
     table.string('email').unique().notNullable();
     table.string('firstName').notNullable();

@@ -4,7 +4,10 @@ const AppError = require("../utils/methods/AppError");
 
 const handleUniqueViolation = err => {
 
-    err.message = "Field is taken, please use something else."
+    const columnsReducer = err.columns.reduce((prev, current) => {
+        return `${prev} ${current}`
+    }, '')
+    err.message = `${columnsReducer.trim()} is taken, please use something else.`
     err.statusCode = 400;
     return err;
 }
