@@ -1,7 +1,5 @@
 const yup = require('yup');
 
-
-
 exports.signupSchema = yup.object().shape({
     username: yup.string().trim().min(3).required(),
     firstName: yup.string().trim().min(2).required(),

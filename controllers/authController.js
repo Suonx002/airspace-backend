@@ -46,8 +46,6 @@ exports.login = catchAsync(async (req, res, next) => {
 
     const { email, password } = req.body;
 
-
-
     const user = await User.query().where({ email }).first();
 
     if (!user) {
@@ -68,8 +66,13 @@ exports.login = catchAsync(async (req, res, next) => {
     // hide password
     user.password = undefined;
 
+
+    // sign token 
+    const token = jwtMethods.signToken(user.username);
+
     return res.status(200).json({
         status: 'success',
+        token,
         data: user,
     })
 

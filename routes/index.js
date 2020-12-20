@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 
 const authRouter = require('./authRoutes');
+const propertyRouter = require('./propertyRoutes');
+
+
 
 
 
@@ -14,5 +17,6 @@ router.get('/', (req, res) => {
 
 
 router.use('/auth', authRouter);
+router.use('/properties', propertyRouter)
 
 module.exports = router;

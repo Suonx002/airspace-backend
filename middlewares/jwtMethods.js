@@ -18,7 +18,7 @@ exports.signToken = username => {
     return token;
 }
 
-exports.verifyToken = catchAsync(async (req, res, next) => {
+exports.protect = catchAsync(async (req, res, next) => {
     let token;
 
     // check if user provide bearer token
@@ -34,7 +34,7 @@ exports.verifyToken = catchAsync(async (req, res, next) => {
 
 
     // check if user exist
-    const userExisted = await User.query().where('username', decoded.username).first();
+    const userExisted = await User.query().where('username', decoded.username).first().select('id', 'username', 'email', 'firstName', 'lastName', 'role');
 
     if (!userExisted) {
         return next(new AppError('This user is no longer existed, please create a new one', 404));
@@ -43,8 +43,5 @@ exports.verifyToken = catchAsync(async (req, res, next) => {
     req.user = userExisted;
 
     next();
-
-
-
 
 }) 

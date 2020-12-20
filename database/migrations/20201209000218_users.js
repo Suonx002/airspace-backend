@@ -16,6 +16,7 @@ exports.up = async knex => await knex.schema.createTable(tableNames.users, table
     table.string('firstName').notNullable();
     table.string('lastName').notNullable();
     table.string('password').notNullable();
+    table.enum('role', ['user', 'host', 'admin', 'super admin']).defaultTo('user');
     defaultTableColumns(table, knex);
 })
 
