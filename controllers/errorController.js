@@ -19,7 +19,7 @@ const globalErrorHandlers = (err, req, res, next) => {
     // err.message is a property, would need to set inside of error,,
     error.message = err.message
 
-    console.log({ error, err })
+    // console.log({ error, err })
 
     if (error.name === 'UniqueViolationError') error = handleUniqueViolation(error);
 

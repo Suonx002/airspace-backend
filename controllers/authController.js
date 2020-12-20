@@ -53,10 +53,6 @@ exports.login = catchAsync(async (req, res, next) => {
     }
 
     const confirmPassword = await bcryptMethods.verifyPassword(password, user.password);
-    console.log({
-        confirmPassword,
-        userPassword: user.password
-    })
 
     // check if password match
     if (!confirmPassword) {

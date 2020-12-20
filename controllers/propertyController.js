@@ -8,11 +8,6 @@ const catchAsync = require('../utils/methods/catchAsync');
 
 exports.createProperty = catchAsync(async (req, res, next) => {
 
-    console.log({
-        user: req.user
-    })
-
-
     const {
         title,
         description,
