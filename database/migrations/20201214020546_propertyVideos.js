@@ -9,7 +9,7 @@ const tableDefaultColumns = require('../../utils/methods/defaultTableColumns')
 
 exports.up = async knex => await knex.schema.createTable(tableNames.propertyVideos, table => {
     table.increments();
-    table.string('title').notNullable();
+    table.string('title').unique().notNullable();
     table.string('videoUrl').notNullable();
     tableDefaultColumns(table, knex);
     table.integer('propertyId').unsigned().notNullable();
