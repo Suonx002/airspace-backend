@@ -9,8 +9,8 @@ const bcryptMethods = require('../utils/methods/bcryptMethods')
 describe('POST /api/v1/auth/signup', () => {
 
     const payload = {
-        username: 'user',
-        email: 'user@gmail.com',
+        username: 'userSignup',
+        email: 'userSignup@gmail.com',
         password: 'test1234',
         firstName: 'user',
         lastName: 'one'
