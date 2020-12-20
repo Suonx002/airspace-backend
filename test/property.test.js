@@ -4,8 +4,6 @@ const app = require('../app');
 
 const Property = require('../models/Property');
 const User = require('../models/User');
-const bcryptMethods = require('../utils/methods/bcryptMethods')
-
 
 
 

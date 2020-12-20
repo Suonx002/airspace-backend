@@ -3,7 +3,6 @@ const supertest = require('supertest');
 const app = require('../app');
 
 const User = require('../models/User');
-const bcryptMethods = require('../utils/methods/bcryptMethods')
 
 
 describe('POST /api/v1/auth/signup', () => {
@@ -12,8 +11,8 @@ describe('POST /api/v1/auth/signup', () => {
         username: 'userSignup',
         email: 'userSignup@gmail.com',
         password: 'test1234',
-        firstName: 'user',
-        lastName: 'one'
+        firstName: 'userSignup',
+        lastName: 'userSignup'
     }
 
     it('should sign up a user with firstName, lastName, username, email, and password', async (done) => {
@@ -50,20 +49,17 @@ describe('POST /api/v1/auth/login', () => {
 
     // create new user
     const newUser = {
-        username: 'newUser1',
-        firstName: 'amy',
-        lastName: 'dinh',
-        email: 'newUser1@gmail.com',
+        username: 'loginUser',
+        firstName: 'loginUser',
+        lastName: 'loginUser',
+        email: 'loginUser@gmail.com',
         password: 'test1234'
     }
 
     beforeEach(async () => {
 
-        const hashedPassword = await bcryptMethods.hashPassword(newUser.password)
+        const createdUser = await supertest(app).post('/api/v1/auth/signup').send(newUser).expect('Content-Type', /json/).expect(201);
 
-        await User.query().insert({
-            ...newUser, password: hashedPassword
-        });
     });
 
     it('should login in current user', async (done) => {
