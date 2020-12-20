@@ -11,7 +11,8 @@ const defaultTableColumns = require('../../utils/methods/defaultTableColumns')
 
 
 exports.up = async knex => await knex.schema.createTable(tableNames.properties, table => {
-    table.uuid('id').primary();
+
+    table.increments();
     table.string('slug').notNullable();
     table.string('title').unique().notNullable();
     table.string('description').notNullable();
@@ -24,7 +25,7 @@ exports.up = async knex => await knex.schema.createTable(tableNames.properties, 
     table.integer('guests').notNullable();
     table.string('price').notNullable();
 
-    table.integer('userId').unsigned().notNullable();
+    table.uuid('userId').unsigned().notNullable();
     table.foreign('userId').references('id').inTable('users').onUpdate('cascade').onDelete('cascade');
     defaultTableColumns(table, knex);
 
