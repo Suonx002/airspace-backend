@@ -4,87 +4,22 @@ const app = require("../app");
 const Property = require("../models/Property");
 const User = require("../models/User");
 
-describe("GET /api/v1/properties", () => {
-    let token;
-    let propertyId;
 
-    const payload = {
-        username: "getPropertyUsers",
-        email: "getPropertyUsers@gmail.com",
-        password: "test1234",
-        firstName: "propertyFirstName",
-        lastName: "propertyLastName",
-    };
-
-    const propertyPayload = {
-        title: "getAllPropertyById",
-        description: "getAllPropertyById description",
-        address: "123 new york",
-        state: "New York",
-        city: "Brooklyn",
-        bedrooms: 10,
-        bathrooms: 4,
-        guests: 12,
-        zipcode: "12345",
-        price: "10.2"
-    }
-
-    beforeEach(async () => {
-        const newUser = await supertest(app)
-            .post("/api/v1/auth/signup")
-            .send(payload)
-            .expect("Content-Type", /json/)
-            .expect(201);
-        token = newUser.body.token;
-
-        // insert property data
-        const property = await supertest(app).post('/api/v1/properties').send(propertyPayload)
-            .set('Authorization', `Bearer ${token}`)
-            .expect("Content-Type", /json/).expect(201);
-
-        propertyId = property.id
-    });
-
-    it("should get all properties with JSON array more than one", async (done) => {
-        const res = await supertest(app)
-            .get("/api/v1/properties")
-            .set('Authorization', `Bearer ${token}`)
-            .expect("Content-Type", /json/)
-            .expect(200);
-
-        console.log({ res: res.body.data })
-
-        expect(res.body.data.length > 0).toBeTruthy()
-
-        done();
-    });
-
-    afterEach(async () => {
-        const { username, email } = payload;
-
-        // deleting user will also delete property cause of cascade on delete
-        await User.query().where({ username, email }).del();
-
-    });
-});
-
-
-describe('/GET /api/v1/properties/:propertyId', () => {
-
+describe('Handles GET/POST/PATCH/DELETE /api/v1/properties routes', () => {
     let token;
     let propertyId;
 
     const userPayload = {
-        username: "getPropertyById",
-        email: "getPropertyById@gmail.com",
+        username: "propertyUsers",
+        email: "propertyUsers@gmail.com",
         password: "test1234",
         firstName: "propertyFirstName",
         lastName: "propertyLastName",
     };
 
     const propertyPayload = {
-        title: "getPropertyById",
-        description: "getPropertyById description",
+        title: "propertyUser",
+        description: "propertyUser description",
         address: "123 new york",
         state: "New York",
         city: "Brooklyn",
@@ -93,43 +28,111 @@ describe('/GET /api/v1/properties/:propertyId', () => {
         guests: 12,
         zipcode: "12345",
         price: "10.2"
-    }
+    };
+
+    const propertyUpdatedPayload = {
+        title: "propertyUser updated",
+        description: "propertyUser updated description",
+        address: "123 new york",
+        state: "New York",
+        city: "Brooklyn",
+        bedrooms: 10,
+        bathrooms: 4,
+        guests: 12,
+        zipcode: "12345",
+        price: "10.2"
+    };
 
 
-    beforeEach(async () => {
-
-        const newUser = await supertest(app).post('/api/v1/auth/signup').send(userPayload).expect(201);
+    beforeAll(async () => {
+        // create new user
+        const newUser = await supertest(app).post('/api/v1/auth/signup').send(userPayload).expect('Content-Type', /json/).expect(201);
         token = newUser.body.token;
+    });
+
+    it('should create a new property', async (done) => {
+        const res = await supertest(app).post('/api/v1/properties').send(propertyPayload).set('Authorization', `Bearer ${token}`).expect('Content-Type', /json/).expect(201);
+        propertyId = res.body.data.id;
 
 
-        const newProperty = await supertest(app).post('/api/v1/properties').send(propertyPayload).set('Authorization', `Bearer ${token}`).expect(201);
+        // this expect method is from jest
+        expect(res.body.data.title).toBe(propertyPayload.title);
+        expect(res.body.data.description).toBe(propertyPayload.description);
+        expect(res.body.data.address).toBe(propertyPayload.address);
+        expect(res.body.data.state).toBe(propertyPayload.state);
+        expect(res.body.data.city).toBe(propertyPayload.city);
+        expect(res.body.data.bedrooms).toBe(propertyPayload.bedrooms);
+        expect(res.body.data.bathrooms).toBe(propertyPayload.bathrooms);
+        expect(res.body.data.guests).toBe(propertyPayload.guests);
+        expect(res.body.data.zipcode).toBe(propertyPayload.zipcode);
+        expect(res.body.data.price).toBe(propertyPayload.price);
 
+        done();
+    });
 
-        propertyId = newProperty.body.data.id;
-    })
+    it('should get property by ID', async (done) => {
 
+        const res = await supertest(app).get(`/api/v1/properties/${propertyId}`).set('Authorization', `Bearer ${token}`).expect('Content-Type', /json/).expect(200);
 
-    it('should get a property by ID', async () => {
-        const property = await supertest(app).get(`/api/v1/properties/${propertyId}`).set('Authorization', `Bearer ${token}`).expect(200);
+        expect(res.body.data.id).toBe(propertyId);
+        expect(res.body.data.title).toBe(propertyPayload.title);
+        expect(res.body.data.description).toBe(propertyPayload.description);
+        expect(res.body.data.address).toBe(propertyPayload.address);
+        expect(res.body.data.state).toBe(propertyPayload.state);
+        expect(res.body.data.city).toBe(propertyPayload.city);
+        expect(res.body.data.bedrooms).toBe(propertyPayload.bedrooms);
+        expect(res.body.data.bathrooms).toBe(propertyPayload.bathrooms);
+        expect(res.body.data.guests).toBe(propertyPayload.guests);
+        expect(res.body.data.zipcode).toBe(propertyPayload.zipcode);
+        expect(res.body.data.price).toBe(propertyPayload.price);
 
-        expect(property.body.data.id).toBe(propertyId);
-        expect(property.body.data.title).toBe(propertyPayload.title);
-        expect(property.body.data.description).toBe(propertyPayload.description);
-        expect(property.body.data.address).toBe(propertyPayload.address);
-        expect(property.body.data.state).toBe(propertyPayload.state);
-        expect(property.body.data.city).toBe(propertyPayload.city);
-        expect(property.body.data.bedrooms).toBe(propertyPayload.bedrooms);
-        expect(property.body.data.bathrooms).toBe(propertyPayload.bathrooms);
-        expect(property.body.data.zipcode).toBe(propertyPayload.zipcode);
-        expect(property.body.data.guests).toBe(propertyPayload.guests);
-        expect(property.body.data.price).toBe(propertyPayload.price);
-    })
+        done();
 
+    });
 
-    afterEach(async () => {
-        const { username, email } = userPayload;
+    it('should get all properties', async (done) => {
 
-        // deleting user will also delete property (cascade on delete)
-        await User.query().where({ username, email }).del();
-    })
-})
+        const res = await supertest(app).get(`/api/v1/properties`).set('Authorization', `Bearer ${token}`).expect('Content-Type', /json/).expect(200);
+
+        expect(res.body.data.length > 0).toBeTruthy();
+
+        done();
+
+    });
+
+    it('should update property by ID', async (done) => {
+        const res = await supertest(app).patch(`/api/v1/properties/${propertyId}`).send(propertyUpdatedPayload).set('Authorization', `Bearer ${token}`).expect('Content-Type', /json/).expect(200);
+
+        expect(res.body.data.title).toBe(propertyUpdatedPayload.title);
+        expect(res.body.data.description).toBe(propertyUpdatedPayload.description);
+        expect(res.body.data.address).toBe(propertyUpdatedPayload.address);
+        expect(res.body.data.state).toBe(propertyUpdatedPayload.state);
+        expect(res.body.data.city).toBe(propertyUpdatedPayload.city);
+        expect(res.body.data.bedrooms).toBe(propertyUpdatedPayload.bedrooms);
+        expect(res.body.data.bathrooms).toBe(propertyUpdatedPayload.bathrooms);
+        expect(res.body.data.guests).toBe(propertyUpdatedPayload.guests);
+        expect(res.body.data.zipcode).toBe(propertyUpdatedPayload.zipcode);
+        expect(res.body.data.price).toBe(propertyUpdatedPayload.price);
+
+        done();
+    });
+
+    it('should delete property by ID', async (done) => {
+        const res = await supertest(app).delete(`/api/v1/properties/${propertyId}`).set('Authorization', `Bearer ${token}`).expect('Content-Type', /json/).expect(200);
+
+        expect(res.body.message).toBe(`Successfully deleted ${propertyUpdatedPayload.title}!`);
+
+        done();
+
+    });
+
+    afterAll(async () => {
+        // delete user will also delete property (onDelete cascade)
+
+        await User.query().where({
+            username: userPayload.username,
+            email: userPayload.email,
+        }).del();
+    });
+
+});;

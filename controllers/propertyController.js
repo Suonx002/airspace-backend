@@ -102,7 +102,7 @@ exports.updateProperty = catchAsync(async (req, res, next) => {
         );
     }
 
-    console.log('GOT PASSED HERE')
+    console.log('GOT PASSED HERE');
 
     const updatedProperty = await Property.query().where({ id: propertyId }).update({
         title,
@@ -117,12 +117,12 @@ exports.updateProperty = catchAsync(async (req, res, next) => {
         price,
         slug: slugify(title),
         updatedAt: currentTimestamp(),
-    }).returning('*')
+    }).returning('*');
 
     return res.status(200).json({
         status: "success",
         message: 'Successfully updated property details!',
-        data: updatedProperty
+        data: updatedProperty[0]
     });
 });
 
@@ -147,5 +147,5 @@ exports.deleteProperty = catchAsync(async (req, res, next) => {
     return res.status(200).json({
         status: 'success',
         message: `Successfully deleted ${property.title}!`
-    })
-})
+    });
+});
