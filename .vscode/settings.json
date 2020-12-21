@@ -4,7 +4,6 @@
   "eslint.format.enable": true,
   "javascript.preferences.quoteStyle": "single",
   "typescript.preferences.quoteStyle": "single",
-  "quote": "single",
   "prettier.jsxSingleQuote": true,
   "prettier.singleQuote": true,
   "javascript.format.semicolons": "insert",

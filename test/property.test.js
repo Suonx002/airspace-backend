@@ -128,7 +128,6 @@ describe('Handles GET/POST/PATCH/DELETE /api/v1/properties routes', () => {
 
     afterAll(async () => {
         // delete user will also delete property (onDelete cascade)
-
         await User.query().where({
             username: userPayload.username,
             email: userPayload.email,
