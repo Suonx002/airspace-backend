@@ -11,7 +11,10 @@ router.route('/')
     .get(protect, propertyController.getAllProperties)
     .post(protect, yupValidateReqBody(propertySchema.createPropertySchema), propertyController.createProperty);
 
-router.route('/:propertyId').get(protect, propertyController.getProperty)
+router.route('/:propertyId')
+    .get(protect, propertyController.getProperty)
+    .patch(protect, yupValidateReqBody(propertySchema.updatePropertySchema), propertyController.updateProperty)
+    .delete(protect, propertyController.deleteProperty)
 
 
 module.exports = router;

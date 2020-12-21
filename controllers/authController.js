@@ -1,3 +1,5 @@
+const { v4: uuidv4 } = require('uuid');
+
 const User = require('../models/User')
 
 const jwtMethods = require('../middlewares/jwtMethods');
@@ -9,6 +11,7 @@ const catchAsync = require('../utils/methods/catchAsync');
 exports.signup = catchAsync(async (req, res, next) => {
 
     const { username, email, firstName, lastName, password } = req.body;
+    const id = uuidv4();
 
     const userExisted = await User.query().where({ username }).orWhere({ email }).first();
 
@@ -20,6 +23,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     const hashedPassword = await bcryptMethods.hashPassword(password);
 
     const newUser = await User.query().insert({
+        id,
         username,
         email,
         firstName,

@@ -6,6 +6,7 @@ const User = require("../models/User");
 
 describe("GET /api/v1/properties", () => {
     let token;
+    let propertyId;
 
     const payload = {
         username: "getPropertyUsers",
@@ -15,6 +16,19 @@ describe("GET /api/v1/properties", () => {
         lastName: "propertyLastName",
     };
 
+    const propertyPayload = {
+        title: "getAllPropertyById",
+        description: "getAllPropertyById description",
+        address: "123 new york",
+        state: "New York",
+        city: "Brooklyn",
+        bedrooms: 10,
+        bathrooms: 4,
+        guests: 12,
+        zipcode: "12345",
+        price: "10.2"
+    }
+
     beforeEach(async () => {
         const newUser = await supertest(app)
             .post("/api/v1/auth/signup")
@@ -23,25 +37,34 @@ describe("GET /api/v1/properties", () => {
             .expect(201);
         token = newUser.body.token;
 
-        // delete all properties
-        await Property.query().del();
+        // insert property data
+        const property = await supertest(app).post('/api/v1/properties').send(propertyPayload)
+            .set('Authorization', `Bearer ${token}`)
+            .expect("Content-Type", /json/).expect(201);
+
+        propertyId = property.id
     });
 
     it("should get all properties with JSON array more than one", async (done) => {
         const res = await supertest(app)
             .get("/api/v1/properties")
-            .set("Authorization", `Bearer ${token}`)
+            .set('Authorization', `Bearer ${token}`)
             .expect("Content-Type", /json/)
             .expect(200);
 
-        expect(res.body.data.length === 0).toBe(true);
+        console.log({ res: res.body.data })
+
+        expect(res.body.data.length > 0).toBeTruthy()
 
         done();
     });
 
     afterEach(async () => {
         const { username, email } = payload;
+
+        // deleting user will also delete property cause of cascade on delete
         await User.query().where({ username, email }).del();
+
     });
 });
 
@@ -106,7 +129,7 @@ describe('/GET /api/v1/properties/:propertyId', () => {
     afterEach(async () => {
         const { username, email } = userPayload;
 
+        // deleting user will also delete property (cascade on delete)
         await User.query().where({ username, email }).del();
-        await Property.query().where({ id: propertyId }).del();
     })
 })

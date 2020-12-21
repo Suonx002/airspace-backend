@@ -1,18 +1,17 @@
 const { Model } = require('objection');
+const currentTimestamp = require('../utils/methods/currentTimestamp')
 
 class BaseModel extends Model {
 
 
     $beforeInsert() {
-        const currentDate = new Date().toISOString();
 
-        this.createdAt = currentDate;
-        this.updatedAt = currentDate;
+        this.createdAt = currentTimestamp();
+        this.updatedAt = currentTimestamp();
     }
 
     $beforeUpdate() {
-        const currentDate = new Date().toISOString();
-        this.updatedAt = currentDate;
+        this.updatedAt = currentTimestamp();
     }
 
 

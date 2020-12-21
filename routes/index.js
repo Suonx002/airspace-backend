@@ -3,6 +3,7 @@ const router = express.Router();
 
 const authRouter = require('./authRoutes');
 const propertyRouter = require('./propertyRoutes');
+const userRouter = require('./userRoute')
 
 
 
@@ -18,5 +19,6 @@ router.get('/', (req, res) => {
 
 router.use('/auth', authRouter);
 router.use('/properties', propertyRouter)
+router.use('/users', userRouter)
 
 module.exports = router;

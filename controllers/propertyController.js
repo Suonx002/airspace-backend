@@ -1,13 +1,11 @@
-const slugify = require('slugify');
-const Property = require('../models/Property')
+const slugify = require("slugify");
+const Property = require("../models/Property");
 
-const AppError = require('../utils/methods/AppError');
-const catchAsync = require('../utils/methods/catchAsync');
-
-
+const AppError = require("../utils/methods/AppError");
+const catchAsync = require("../utils/methods/catchAsync");
+const currentTimestamp = require("../utils/methods/currentTimestamp");
 
 exports.createProperty = catchAsync(async (req, res, next) => {
-
     const {
         title,
         description,
@@ -18,9 +16,16 @@ exports.createProperty = catchAsync(async (req, res, next) => {
         bathrooms,
         guests,
         zipcode,
-        price
+        price,
     } = req.body;
 
+    const propertyExist = await Property.query().where({ title }).first();
+
+    if (propertyExist) {
+        return next(
+            new AppError("Title is taken, please use something else!", 400)
+        );
+    }
 
     const property = await Property.query().insert({
         slug: slugify(title),
@@ -34,28 +39,95 @@ exports.createProperty = catchAsync(async (req, res, next) => {
         guests,
         zipcode,
         price,
-        userId: req.user.id
-    })
+        userId: req.user.id,
+    });
 
     return res.status(201).json({
         status: "success",
-        message: 'Successfully created new property!',
-        data: property
-    })
-})
+        message: "Successfully created new property!",
+        data: property,
+    });
+});
 
 exports.getAllProperties = catchAsync(async (req, res, next) => {
-
     const properties = await Property.query();
 
     return res.status(200).json({
-        status: 'success',
-        data: properties
-    })
-
-})
+        status: "success",
+        length: properties.length,
+        data: properties,
+    });
+});
 
 exports.getProperty = catchAsync(async (req, res, next) => {
+    const { propertyId } = req.params;
+
+    const property = await Property.query().where({ id: propertyId }).first();
+
+    if (!property) {
+        return next(new AppError("There is no property with this ID", 400));
+    }
+
+    return res.status(200).json({
+        status: "success",
+        data: property,
+    });
+});
+
+exports.updateProperty = catchAsync(async (req, res, next) => {
+    const {
+        title,
+        description,
+        address,
+        city,
+        state,
+        zipcode,
+        bedrooms,
+        bathrooms,
+        guests,
+        price,
+    } = req.body;
+
+    const { propertyId } = req.params;
+
+    const property = await Property.query().where({ id: propertyId }).first();
+
+    if (!property) {
+        return next(new AppError("There is no property with this ID", 400));
+    }
+
+    if (req.user.id !== property.userId) {
+        return next(
+            new AppError("You do not have permission to update this property", 401)
+        );
+    }
+
+    console.log('GOT PASSED HERE')
+
+    const updatedProperty = await Property.query().where({ id: propertyId }).update({
+        title,
+        description,
+        address,
+        city,
+        state,
+        zipcode,
+        bedrooms,
+        bathrooms,
+        guests,
+        price,
+        slug: slugify(title),
+        updatedAt: currentTimestamp(),
+    }).returning('*')
+
+    return res.status(200).json({
+        status: "success",
+        message: 'Successfully updated property details!',
+        data: updatedProperty
+    });
+});
+
+
+exports.deleteProperty = catchAsync(async (req, res, next) => {
     const { propertyId } = req.params;
 
     const property = await Property.query().where({ id: propertyId }).first();
@@ -64,8 +136,16 @@ exports.getProperty = catchAsync(async (req, res, next) => {
         return next(new AppError('There is no property with this ID', 400));
     }
 
+    if (req.user.id !== property.userId) {
+        return next(
+            new AppError("You do not have permission to delete this property", 401)
+        );
+    }
+
+    await Property.query().where({ id: propertyId }).del();
+
     return res.status(200).json({
         status: 'success',
-        data: property
+        message: `Successfully deleted ${property.title}!`
     })
 })
