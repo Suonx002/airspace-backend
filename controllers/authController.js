@@ -1,6 +1,6 @@
 const { v4: uuidv4 } = require('uuid');
 
-const User = require('../models/User')
+const User = require('../models/User');
 
 const jwtMethods = require('../middlewares/jwtMethods');
 const bcryptMethods = require('../utils/methods/bcryptMethods');
@@ -43,7 +43,7 @@ exports.signup = catchAsync(async (req, res, next) => {
         status: 'success',
         token,
         data: newUser
-    })
+    });
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -74,6 +74,6 @@ exports.login = catchAsync(async (req, res, next) => {
         status: 'success',
         token,
         data: user,
-    })
+    });
 
-})
+});
