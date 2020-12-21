@@ -102,7 +102,6 @@ exports.updateProperty = catchAsync(async (req, res, next) => {
         );
     }
 
-    console.log('GOT PASSED HERE');
 
     const updatedProperty = await Property.query().where({ id: propertyId }).update({
         title,

@@ -1,6 +1,6 @@
 const Knex = require('knex');
 const tableNames = require('../../utils/constants/tableNames');
-const tableDefaultColumns = require('../../utils/methods/defaultTableColumns')
+const tableDefaultColumns = require('../../utils/methods/defaultTableColumns');
 
 /**
  * 
@@ -11,10 +11,11 @@ const tableDefaultColumns = require('../../utils/methods/defaultTableColumns')
 exports.up = async knex => await knex.schema.createTable(tableNames.propertyAmenities, table => {
     table.increments();
     table.string('title').unique().notNullable();
+    table.string('userId').notNullable();
     table.integer('propertyId').unsigned().notNullable();
-    table.foreign('propertyId').references('id').inTable('properties').onUpdate('cascade').onDelete('cascade')
+    table.foreign('propertyId').references('id').inTable('properties').onUpdate('cascade').onDelete('cascade');
     tableDefaultColumns(table, knex);
 
-})
+});
 
 exports.down = async knex => await knex.schema.dropTable(tableNames.propertyAmenities);

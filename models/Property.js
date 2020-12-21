@@ -1,6 +1,6 @@
 const BaseModel = require('./Base');
 
-const tableNames = require('../utils/constants/tableNames')
+const tableNames = require('../utils/constants/tableNames');
 
 class Property extends BaseModel {
 
@@ -8,18 +8,19 @@ class Property extends BaseModel {
         return tableNames.properties;
     }
 
-    // static get relationMappings(){
-    //     const User = require('./User');
-    //     return {
-    //         users: {
-    //             relation: BaseModel.HasOneRelation,
-    //             modelClass: User,
-    //             join: {
-    //                 from:`${tableNames.properties}.id`,
-    //             }
-    //         }
-    //     }
-    // }
+    static get relationMappings() {
+        const PropertyRating = require('./PropertyRating');
+        return {
+            propertyRatings: {
+                relation: BaseModel.HasManyRelation,
+                modelClass: PropertyRating,
+                join: {
+                    from: `${tableNames.properties}.id`,
+                    to: `${tableNames.propertyRatings}.propertyId`
+                }
+            }
+        };
+    }
 
 }
 

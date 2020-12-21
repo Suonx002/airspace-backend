@@ -6,6 +6,13 @@ const yupValidateReqBody = require('../middlewares/yupValidateReqBody');
 const propertySchema = require('../validations/propertySchema');
 const { protect } = require('../middlewares/jwtMethods');
 
+const propertRatingRouter = require('./propertyRatingRoutes');
+
+
+// allow propertyRatings go through here
+// api/v1/properties/:propertyId/propertyRatings
+router.use('/:propertyId/propertyRatings', propertRatingRouter);
+
 
 router.route('/')
     .get(protect, propertyController.getAllProperties)
@@ -14,7 +21,7 @@ router.route('/')
 router.route('/:propertyId')
     .get(protect, propertyController.getProperty)
     .patch(protect, yupValidateReqBody(propertySchema.updatePropertySchema), propertyController.updateProperty)
-    .delete(protect, propertyController.deleteProperty)
+    .delete(protect, propertyController.deleteProperty);
 
 
 module.exports = router;
