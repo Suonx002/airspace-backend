@@ -22,7 +22,7 @@ exports.getpropertyReview = catchAsync(async (req, res, next) => {
     const { propertyId, propertyReviewId } = req.params;
 
     if (!propertyId || !propertyReviewId) {
-        return next(new AppError('Please provide property ID and property rating ID', 400));
+        return next(new AppError('Please provide property ID and property review ID', 400));
     }
 
     const propertyReview = await propertyReview.query().where({ id: propertyReviewId }).andWhere({ propertyId }).first();
