@@ -50,10 +50,12 @@ exports.createProperty = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllProperties = catchAsync(async (req, res, next) => {
-    const properties = await Property.query().withGraphFetched('[propertyRatings.user]')
+    const properties = await Property.query().withGraphFetched('[propertyRatings.user, user]')
         .modifyGraph('user', builder => { builder.select('firstName', 'lastName', 'username', 'email'); })
         .modifyGraph('propertyRatings', builder => { builder.select('title', 'comment', 'rating'); })
         .modifyGraph('propertyRatings.user', builder => { builder.select('firstName', 'lastName'); });
+
+
 
     console.log({ properties });
 
