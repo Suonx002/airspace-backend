@@ -8,12 +8,37 @@ const currentTimestamp = require("../utils/methods/currentTimestamp");
 
 exports.getAllPropertyRatings = catchAsync(async (req, res, next) => {
 
-    const propertyRatings = await PropertyRating.query().withGraphFetched('property');
+    const propertyRatings = await PropertyRating.query().withGraphFetched('[user, property.user]')
+        .modifyGraph('user', builder => { builder.select("firstName", 'lastName'); })
+        .modifyGraph('property.user', builder => { builder.select('firstName', 'lastName'); });
 
     return res.status(200).json({
         status: 'success',
         data: propertyRatings
     });
+});
+
+exports.getPropertyRating = catchAsync(async (req, res, next) => {
+    const { propertyId, propertyRatingId } = req.params;
+
+    if (!propertyId || !propertyRatingId) {
+        return next(new AppError('Please provide property ID and property rating ID', 400));
+    }
+
+    const propertyRating = await PropertyRating.query().where({ id: propertyRatingId }).andWhere({ propertyId }).first();
+
+    if (!propertyRating) {
+        return next(new AppError('There is no property review for this property ID', 400));
+    }
+
+
+
+    return res.status(200).json({
+        status: 'success',
+        data: propertyRating
+    });
+
+
 });
 
 exports.createPropertyRating = catchAsync(async (req, res, next) => {

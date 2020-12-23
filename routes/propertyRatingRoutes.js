@@ -12,6 +12,8 @@ router.route('/')
     .get(protect, propertyRatingController.getAllPropertyRatings)
     .post(protect, yupValidateReqBody(propertyRatingSchema.createPropertyRatingSchema), propertyRatingController.createPropertyRating);
 
+router.route('/:propertyRatingId').get(protect, propertyRatingController.getPropertyRating);
+
 
 
 module.exports = router;

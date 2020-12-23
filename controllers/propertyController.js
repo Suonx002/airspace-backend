@@ -55,13 +55,6 @@ exports.getAllProperties = catchAsync(async (req, res, next) => {
         .modifyGraph('propertyRatings', builder => { builder.select('title', 'comment', 'rating'); })
         .modifyGraph('propertyRatings.user', builder => { builder.select('firstName', 'lastName'); });
 
-
-
-    console.log({ properties });
-
-
-
-
     return res.status(200).json({
         status: "success",
         length: properties.length,
