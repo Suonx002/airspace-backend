@@ -22,7 +22,7 @@ class User extends BaseModel {
                     to: `${tableNames.properties}.userId`
                 }
             }
-        }
+        };
     };
 }
 

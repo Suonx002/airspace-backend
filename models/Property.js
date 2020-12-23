@@ -10,7 +10,16 @@ class Property extends BaseModel {
 
     static get relationMappings() {
         const PropertyRating = require('./PropertyRating');
+        const User = require('./User');
         return {
+            user: {
+                relation: BaseModel.BelongsToOneRelation,
+                modelClass: User,
+                join: {
+                    from: `${tableNames.properties}.userId`,
+                    to: `${tableNames.users}.id`
+                }
+            },
             propertyRatings: {
                 relation: BaseModel.HasManyRelation,
                 modelClass: PropertyRating,
@@ -18,7 +27,9 @@ class Property extends BaseModel {
                     from: `${tableNames.properties}.id`,
                     to: `${tableNames.propertyRatings}.propertyId`
                 }
-            }
+            },
+
+
         };
     }
 

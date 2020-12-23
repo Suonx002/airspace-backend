@@ -8,7 +8,7 @@ const currentTimestamp = require("../utils/methods/currentTimestamp");
 
 exports.getAllPropertyRatings = catchAsync(async (req, res, next) => {
 
-    const propertyRatings = await PropertyRating.query();
+    const propertyRatings = await PropertyRating.query().withGraphFetched('property');
 
     return res.status(200).json({
         status: 'success',
