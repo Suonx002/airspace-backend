@@ -1,6 +1,6 @@
 const Knex = require('knex');
-const tableNames = require('../../utils/constants/tableNames')
-const defaultTableColumns = require('../../utils/methods/defaultTableColumns')
+const tableNames = require('../../utils/constants/tableNames');
+const defaultTableColumns = require('../../utils/methods/defaultTableColumns');
 
 
 
@@ -29,6 +29,6 @@ exports.up = async knex => await knex.schema.createTable(tableNames.properties, 
     table.foreign('userId').references('id').inTable('users').onUpdate('cascade').onDelete('cascade');
     defaultTableColumns(table, knex);
 
-})
+});
 
-exports.down = async knex => await knex.schema.dropTable(tableNames.properties);
+exports.down = async knex => await knex.schema.dropTableIfExists(tableNames.properties);

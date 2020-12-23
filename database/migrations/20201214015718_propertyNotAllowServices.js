@@ -16,4 +16,4 @@ exports.up = async knex => await knex.schema.createTable(tableNames.propertyNotA
     table.foreign('propertyId').references("id").inTable('properties');
 });
 
-exports.down = async knex => await knex.schema.dropTable(tableNames.propertyNotAllowServices);
+exports.down = async knex => await knex.schema.dropTableIfExists(tableNames.propertyNotAllowServices);

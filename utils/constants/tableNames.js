@@ -1,7 +1,7 @@
 module.exports = {
     users: 'users',
     properties: 'properties',
-    propertyRatings: 'propertyRatings',
+    propertyReviews: 'propertyReviews',
     propertyPhotos: 'propertyPhotos',
     propertyAmenities: 'amenities',
     propertyFeatures: 'propertyFeatures',

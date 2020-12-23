@@ -50,10 +50,10 @@ exports.createProperty = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllProperties = catchAsync(async (req, res, next) => {
-    const properties = await Property.query().withGraphFetched('[propertyRatings.user, user]')
+    const properties = await Property.query().withGraphFetched('[propertyReviews.user, user]')
         .modifyGraph('user', builder => { builder.select('firstName', 'lastName', 'username', 'email'); })
-        .modifyGraph('propertyRatings', builder => { builder.select('title', 'comment', 'rating'); })
-        .modifyGraph('propertyRatings.user', builder => { builder.select('firstName', 'lastName'); });
+        .modifyGraph('propertyReviews', builder => { builder.select('title', 'comment', 'rating'); })
+        .modifyGraph('propertyReviews.user', builder => { builder.select('firstName', 'lastName'); });
 
     return res.status(200).json({
         status: "success",

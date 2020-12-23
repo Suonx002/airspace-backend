@@ -4,7 +4,7 @@ const router = express.Router();
 const authRouter = require('./authRoutes');
 const userRouter = require('./userRoute');
 const propertyRouter = require('./propertyRoutes');
-const propertyRatingRouter = require('./propertyRatingRoutes');
+const propertyReviewRouter = require('./propertyReviewRoutes');
 
 
 router.get('/', (req, res) => {
@@ -18,6 +18,6 @@ router.get('/', (req, res) => {
 router.use('/auth', authRouter);
 router.use('/users', userRouter);
 router.use('/properties', propertyRouter);
-router.use('/propertyRatings', propertyRatingRouter);
+router.use('/propertyReviews', propertyReviewRouter);
 
 module.exports = router;

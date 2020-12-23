@@ -20,7 +20,7 @@ exports.up = async knex => await knex.schema.createTable(tableNames.users, table
     table.string('password').notNullable();
     table.enum('role', ['user', 'host', 'admin', 'super admin']).defaultTo('user');
     defaultTableColumns(table, knex);
-})
+});
 
 //down is rollback
-exports.down = async knex => await knex.schema.dropTable(tableNames.users);
+exports.down = async knex => await knex.schema.dropTableIfExists(tableNames.users);

@@ -2,11 +2,11 @@ const BaseModel = require('./Base');
 
 const tableNames = require('../utils/constants/tableNames');
 
-class PropertyRating extends BaseModel {
+class propertyReview extends BaseModel {
 
 
     static get tableName() {
-        return tableNames.propertyRatings;
+        return tableNames.propertyReviews;
     }
 
     static get relationMappings() {
@@ -17,7 +17,7 @@ class PropertyRating extends BaseModel {
                 relation: BaseModel.BelongsToOneRelation,
                 modelClass: Property,
                 join: {
-                    from: `${tableNames.propertyRatings}.propertyId`,
+                    from: `${tableNames.propertyReviews}.propertyId`,
                     to: `${tableNames.properties}.id`
                 }
             },
@@ -25,7 +25,7 @@ class PropertyRating extends BaseModel {
                 relation: BaseModel.BelongsToOneRelation,
                 modelClass: User,
                 join: {
-                    from: `${tableNames.propertyRatings}.userId`,
+                    from: `${tableNames.propertyReviews}.userId`,
                     to: `${tableNames.users}.id`
                 }
             }
@@ -34,4 +34,4 @@ class PropertyRating extends BaseModel {
 }
 
 
-module.exports = PropertyRating;
+module.exports = propertyReview;

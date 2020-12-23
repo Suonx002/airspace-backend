@@ -18,4 +18,4 @@ exports.up = async knex => await knex.schema.createTable(tableNames.propertyAmen
 
 });
 
-exports.down = async knex => await knex.schema.dropTable(tableNames.propertyAmenities);
+exports.down = async knex => await knex.schema.dropTableIfExists(tableNames.propertyAmenities);

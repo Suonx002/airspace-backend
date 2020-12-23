@@ -6,12 +6,12 @@ const yupValidateReqBody = require('../middlewares/yupValidateReqBody');
 const propertySchema = require('../validations/propertySchema');
 const { protect } = require('../middlewares/jwtMethods');
 
-const propertRatingRouter = require('./propertyRatingRoutes');
+const propertRatingRouter = require('./propertyReviewRoutes');
 
 
-// allow propertyRatings go through here
-// api/v1/properties/:propertyId/propertyRatings
-router.use('/:propertyId/propertyRatings', propertRatingRouter);
+// allow propertyReviews go through here
+// api/v1/properties/:propertyId/propertyReviews
+router.use('/:propertyId/propertyReviews', propertRatingRouter);
 
 
 router.route('/')
