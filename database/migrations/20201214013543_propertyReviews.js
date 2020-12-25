@@ -11,12 +11,13 @@ exports.up = async knex => await knex.schema.createTable(tableNames.propertyRevi
     table.increments();
     table.string('title').notNullable();
     table.enu('rating', [1, 2, 3, 4, 5]).notNullable();
-    table.string('userId').notNullable();
     table.text('comment').notNullable();
     tableDefaultColumns(table, knex);
 
     table.integer('propertyId').unsigned().notNullable();
     table.foreign('propertyId').references("id").inTable('properties');
+    table.uuid('userId').notNullable();
+    table.foreign('userId').references('id').inTable('users');
 });
 
 exports.down = async knex => await knex.schema.dropTableIfExists(tableNames.propertyReviews);

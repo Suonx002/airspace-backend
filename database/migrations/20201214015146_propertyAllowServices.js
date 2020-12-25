@@ -10,10 +10,12 @@ const tableDefaultColumns = require('../../utils/methods/defaultTableColumns');
 exports.up = async knex => await knex.schema.createTable(tableNames.propertyAllowServices, table => {
     table.increments();
     table.string('title').unique().notNullable();
-    table.string('userId').notNullable();
     tableDefaultColumns(table, knex);
+
     table.integer('propertyId').unsigned().notNullable();
     table.foreign('propertyId').references("id").inTable('properties');
+    table.uuid('userId').notNullable();
+    table.foreign('userId').references('id').inTable('users');
 });
 
 exports.down = async knex => await knex.schema.dropTableIfExists(tableNames.propertyAllowServices);

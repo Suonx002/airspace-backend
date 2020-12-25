@@ -12,44 +12,54 @@ exports.seed = async knex => {
         // insert new data
         await knex(tableNames.users).insert([
             {
-                id: 1,
+                id: '156fb36e-8973-45f1-8e1f-30bb1cd43316',
                 username: 'amy',
                 firstName: 'amy',
                 lastName: 'dinh',
                 email: 'amy@gmail.com',
-                password: await bcryptMethods.hashPassword('test1234')
+                password: await bcryptMethods.hashPassword('test1234'),
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
             },
             {
-                id: 2,
+                id: '156fb36e-8973-45f1-8e1f-30bb1cd43317',
                 username: 'riley',
                 firstName: 'riley',
                 lastName: 'stehr',
                 email: 'riley@gmail.com',
-                password: await bcryptMethods.hashPassword('test1234')
+                password: await bcryptMethods.hashPassword('test1234'),
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
             },
             {
-                id: 3,
+                id: '156fb36e-8973-45f1-8e1f-30bb1cd43318',
                 username: 'briana',
                 firstName: 'briana',
                 lastName: 'vander',
                 email: 'briana@gmail.com',
-                password: await bcryptMethods.hashPassword('test1234')
+                password: await bcryptMethods.hashPassword('test1234'),
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
             },
             {
-                id: 4,
+                id: '156fb36e-8973-45f1-8e1f-30bb1cd43319',
                 username: 'jack',
                 firstName: 'jack',
                 lastName: 'sparrow',
                 email: 'jack@gmail.com',
-                password: await bcryptMethods.hashPassword('test1234')
+                password: await bcryptMethods.hashPassword('test1234'),
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
             },
             {
-                id: 5,
+                id: '156fb36e-8973-45f1-8e1f-30bb1cd43320',
                 username: 'anderson',
                 firstName: 'anderson',
                 lastName: 'marz',
                 email: 'anderson@gmail.com',
-                password: await bcryptMethods.hashPassword('test1234')
+                password: await bcryptMethods.hashPassword('test1234'),
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
             },
 
         ]);
