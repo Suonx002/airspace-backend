@@ -26,8 +26,12 @@ const globalErrorHandlers = (err, req, res, next) => {
     // err.message is a property, would need to set inside of error,,
     error.message = err.message;
 
+    console.log({
+        error
+    });
 
-    console.log(error.name === 'TokenExpiredError');
+
+    // console.log(error.name === 'TokenExpiredError') ;
 
     if (error.name === 'UniqueViolationError') error = handleUniqueViolation(error);
     if (error.name === 'TokenExpiredError') error = handleJWTExpire(error);

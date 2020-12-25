@@ -13,7 +13,6 @@ const db = require('./database/connectDB');
 const AppError = require('./utils/methods/AppError');
 const globalErrorHandlers = require('./controllers/errorController');
 const apiRouter = require('./routes');
-const trimAllRequests = require('./utils/methods/trimAllRequests');
 
 
 // middlewares
@@ -27,7 +26,6 @@ app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(trimAllRequests);
 
 app.get('/favicon.ico', (req, res) => res.status(204));
 

@@ -2,7 +2,7 @@ const BaseModel = require('./Base');
 
 const tableNames = require('../utils/constants/tableNames');
 
-class propertyReview extends BaseModel {
+class PropertyReview extends BaseModel {
 
 
     static get tableName() {
@@ -34,4 +34,4 @@ class propertyReview extends BaseModel {
 }
 
 
-module.exports = propertyReview;
+module.exports = PropertyReview;

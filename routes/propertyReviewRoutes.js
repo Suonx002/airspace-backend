@@ -9,10 +9,10 @@ const propertyReviewSchema = require('../validations/propertyReviewSchema');
 const { protect } = require('../middlewares/jwtMethods');
 
 router.route('/')
-    .get(protect, propertyReviewController.getAllpropertyReviews)
-    .post(protect, yupValidateReqBody(propertyReviewSchema.createpropertyReviewSchema), propertyReviewController.createpropertyReview);
+    .get(protect, propertyReviewController.getAllPropertyReviews)
+    .post(protect, yupValidateReqBody(propertyReviewSchema.createpropertyReviewSchema), propertyReviewController.createPropertyReview);
 
-router.route('/:propertyReviewId').get(protect, propertyReviewController.getpropertyReview);
+router.route('/:propertyReviewId').get(protect, propertyReviewController.getPropertyReview);
 
 
 

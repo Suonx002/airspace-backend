@@ -1,14 +1,14 @@
 const Property = require('../models/Property');
-const propertyReview = require("../models/propertyReview");
+const PropertyReview = require("../models/PropertyReview");
 
 const AppError = require("../utils/methods/AppError");
 const catchAsync = require("../utils/methods/catchAsync");
 const currentTimestamp = require("../utils/methods/currentTimestamp");
 
 
-exports.getAllpropertyReviews = catchAsync(async (req, res, next) => {
+exports.getAllPropertyReviews = catchAsync(async (req, res, next) => {
 
-    const propertyReviews = await propertyReview.query().withGraphFetched('[user, property.user]')
+    const propertyReviews = await PropertyReview.query().withGraphFetched('[user, property.user]')
         .modifyGraph('user', builder => { builder.select("firstName", 'lastName'); })
         .modifyGraph('property.user', builder => { builder.select('firstName', 'lastName'); });
 
@@ -18,20 +18,20 @@ exports.getAllpropertyReviews = catchAsync(async (req, res, next) => {
     });
 });
 
-exports.getpropertyReview = catchAsync(async (req, res, next) => {
+exports.getPropertyReview = catchAsync(async (req, res, next) => {
     const { propertyId, propertyReviewId } = req.params;
 
     if (!propertyId || !propertyReviewId) {
         return next(new AppError('Please provide property ID and property review ID', 400));
     }
 
-    const propertyReview = await propertyReview.query().where({ id: propertyReviewId }).andWhere({ propertyId }).first();
+
+    const propertyReview = await PropertyReview.query().where({ id: propertyReviewId }).andWhere({ propertyId }).first();
+
 
     if (!propertyReview) {
         return next(new AppError('There is no property review for this property ID', 400));
     }
-
-
 
     return res.status(200).json({
         status: 'success',
@@ -41,7 +41,7 @@ exports.getpropertyReview = catchAsync(async (req, res, next) => {
 
 });
 
-exports.createpropertyReview = catchAsync(async (req, res, next) => {
+exports.createPropertyReview = catchAsync(async (req, res, next) => {
     const { propertyId } = req.params;
 
     const { title, comment, rating } = req.body;
@@ -61,18 +61,17 @@ exports.createpropertyReview = catchAsync(async (req, res, next) => {
         return next(new AppError('Owner cannot leave review on their own property', 400));
     }
 
-    const propertyReviewExist = await propertyReview.query().where({
+    const propertyReviewExist = await PropertyReview.query().where({
         userId: req.user.id,
         propertyId
     }).first();
 
-    console.log({ propertyReviewExist });
 
     if (propertyReviewExist) {
         return next(new AppError('You are only allow to leave one review per property', 400));
     }
 
-    const propertyReview = await propertyReview.query().insert({
+    const propertyReview = await PropertyReview.query().insert({
         title,
         comment,
         rating,
