@@ -11,7 +11,6 @@ exports.seed = async knex => {
         //create new table
         await knex(tableNames.properties).insert([
             {
-                id: 1,
                 title: 'Central Park House',
                 slug: 'central-park-house',
                 description: 'Central Park is an urban park in New York City located between the Upper West and Upper East Sides of Manhattan.',
@@ -28,7 +27,6 @@ exports.seed = async knex => {
                 updatedAt: new Date().toISOString()
             },
             {
-                id: 2,
                 title: 'Rockefeller Center House',
                 slug: 'rockefeller-center-house',
                 description: 'Rockefeller Center is a large complex consisting of 19 commercial buildings covering 22 acres between 48th Street and 51st Street in Midtown Manhattan, New York City.',
@@ -45,7 +43,6 @@ exports.seed = async knex => {
                 updatedAt: new Date().toISOString()
             },
             {
-                id: 3,
                 title: 'Empire State Building House',
                 slug: 'empire-state-building-house',
                 description: 'The Empire State Building is a 102-story Art Deco skyscraper in Midtown Manhattan in New York City.',
@@ -62,7 +59,6 @@ exports.seed = async knex => {
                 updatedAt: new Date().toISOString()
             },
             {
-                id: 4,
                 title: 'Walt Disney World Parks Hotel',
                 slug: 'walt-disney-world-parks-hotel',
                 description: 'he Walt Disney World Resort, also called Walt Disney World and Disney World, is an entertainment complex in Bay Lake and Lake Buena Vista, Florida, in the United States, near the cities of Orlando and Kissimmee.',
@@ -79,7 +75,6 @@ exports.seed = async knex => {
                 updatedAt: new Date().toISOString()
             },
             {
-                id: 5,
                 title: 'Universal Orlando Resort',
                 slug: 'universal-orlando-resort',
                 description: 'American theme park and entertainment resort complex based in Orlando, Florida.',
@@ -96,7 +91,6 @@ exports.seed = async knex => {
                 updatedAt: new Date().toISOString()
             },
             {
-                id: 6,
                 title: 'SeaWorld Orlando',
                 slug: 'seaworld-orlando',
                 description: 'SeaWorld Orlando is a theme park and marine zoological park, in Orlando, Florida. It is owned and operated by SeaWorld Parks & Entertainment.',
@@ -113,7 +107,6 @@ exports.seed = async knex => {
                 updatedAt: new Date().toISOString()
             },
             {
-                id: 7,
                 title: 'Fremont Street Experience Hotel',
                 slug: 'fremont-street-experience-hotel',
                 description: 'The Fremont Street Experience is a pedestrian mall and attraction in downtown Las Vegas, Nevada.',
@@ -130,7 +123,6 @@ exports.seed = async knex => {
                 updatedAt: new Date().toISOString()
             },
             {
-                id: 8,
                 title: 'Paris Hotel and the Eiffel Tower',
                 slug: 'paris-hotel-and-the-eiffel-tower',
                 description: 'Paris Las Vegas is one of the most easily recognized resorts in the city. Out front is a scale model of the Eiffel Tower, and down the way is a recreation of the Paris Opera House.',
@@ -147,7 +139,6 @@ exports.seed = async knex => {
                 updatedAt: new Date().toISOString()
             },
             {
-                id: 9,
                 title: `Caesar's Palace`,
                 slug: 'caesars-palace',
                 description: `Currently Caesar's Palace is a massive complex in the middle of the Strip, complete with every imaginable entertainment option.`,
