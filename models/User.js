@@ -12,6 +12,7 @@ class User extends BaseModel {
     static get relationMappings() {
 
         const Property = require('./Property');
+        const PropertyReview = require('./PropertyReview');
 
         return {
             properties: {
@@ -20,6 +21,14 @@ class User extends BaseModel {
                 join: {
                     from: `${tableNames.users}.id`,
                     to: `${tableNames.properties}.userId`
+                }
+            },
+            propertyReviews: {
+                relation: BaseModel.HasManyRelation,
+                modelClass: PropertyReview,
+                join: {
+                    from: `${tableNames.users}.id`,
+                    to: `${tableNames.propertyReviews}.userId`
                 }
             }
         };
