@@ -19,6 +19,12 @@ const handleJWTExpire = err => {
     return err;
 };
 
+const handleJWTError = err => {
+    err.message = 'Invalid token. Please login again.';
+    err.status = 400;
+    return err;
+};
+
 const globalErrorHandlers = (err, req, res, next) => {
 
     let error = { ...err };
@@ -35,6 +41,7 @@ const globalErrorHandlers = (err, req, res, next) => {
 
     if (error.name === 'UniqueViolationError') error = handleUniqueViolation(error);
     if (error.name === 'TokenExpiredError') error = handleJWTExpire(error);
+    if (error.name === 'JsonWebTokenError') error = handleJWTError(error);
 
     return res.status(error.statusCode || 500).json({
         status: 'fail',
