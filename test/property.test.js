@@ -46,12 +46,17 @@ describe('Handles GET/POST/PATCH/DELETE /api/v1/properties routes', () => {
 
     beforeAll(async () => {
         // create new user
-        const newUser = await supertest(app).post('/api/v1/auth/signup').send(userPayload).expect('Content-Type', /json/).expect(201);
+        const newUser = await supertest(app).post('/api/v1/auth/signup').send(userPayload)
+            .expect('Content-Type', /json/)
+            .expect(201);
         token = newUser.body.token;
     });
 
     it('should create a new property', async (done) => {
-        const res = await supertest(app).post('/api/v1/properties').send(propertyPayload).set('Authorization', `Bearer ${token}`).expect('Content-Type', /json/).expect(201);
+        const res = await supertest(app).post('/api/v1/properties').send(propertyPayload)
+            .set('Authorization', `Bearer ${token}`)
+            .expect('Content-Type', /json/)
+            .expect(201);
         propertyId = res.body.data.id;
 
 
@@ -72,7 +77,10 @@ describe('Handles GET/POST/PATCH/DELETE /api/v1/properties routes', () => {
 
     it('should get property by ID', async (done) => {
 
-        const res = await supertest(app).get(`/api/v1/properties/${propertyId}`).set('Authorization', `Bearer ${token}`).expect('Content-Type', /json/).expect(200);
+        const res = await supertest(app).get(`/api/v1/properties/${propertyId}`)
+            .set('Authorization', `Bearer ${token}`)
+            .expect('Content-Type', /json/)
+            .expect(200);
 
         expect(res.body.data.id).toBe(propertyId);
         expect(res.body.data.title).toBe(propertyPayload.title);
@@ -92,7 +100,10 @@ describe('Handles GET/POST/PATCH/DELETE /api/v1/properties routes', () => {
 
     it('should get all properties', async (done) => {
 
-        const res = await supertest(app).get(`/api/v1/properties`).set('Authorization', `Bearer ${token}`).expect('Content-Type', /json/).expect(200);
+        const res = await supertest(app).get(`/api/v1/properties`)
+            .set('Authorization', `Bearer ${token}`)
+            .expect('Content-Type', /json/)
+            .expect(200);
 
         expect(res.body.data.length > 0).toBeTruthy();
 
@@ -101,7 +112,11 @@ describe('Handles GET/POST/PATCH/DELETE /api/v1/properties routes', () => {
     });
 
     it('should update property by ID', async (done) => {
-        const res = await supertest(app).patch(`/api/v1/properties/${propertyId}`).send(propertyUpdatedPayload).set('Authorization', `Bearer ${token}`).expect('Content-Type', /json/).expect(200);
+        const res = await supertest(app).patch(`/api/v1/properties/${propertyId}`)
+            .send(propertyUpdatedPayload)
+            .set('Authorization', `Bearer ${token}`)
+            .expect('Content-Type', /json/)
+            .expect(200);
 
         expect(res.body.data.title).toBe(propertyUpdatedPayload.title);
         expect(res.body.data.description).toBe(propertyUpdatedPayload.description);
@@ -118,9 +133,10 @@ describe('Handles GET/POST/PATCH/DELETE /api/v1/properties routes', () => {
     });
 
     it('should delete property by ID', async (done) => {
-        const res = await supertest(app).delete(`/api/v1/properties/${propertyId}`).set('Authorization', `Bearer ${token}`).expect('Content-Type', /json/).expect(200);
-
-        expect(res.body.message).toBe(`Successfully deleted ${propertyUpdatedPayload.title}!`);
+        await supertest(app).delete(`/api/v1/properties/${propertyId}`)
+            .set('Authorization', `Bearer ${token}`)
+            .expect('Content-Type', /json/)
+            .expect(200);
 
         done();
 
