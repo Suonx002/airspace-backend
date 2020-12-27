@@ -10,11 +10,11 @@ const { protect } = require('../middlewares/jwtMethods');
 
 router.route('/')
     .get(protect, propertyReviewController.getAllPropertyReviews)
-    .post(protect, yupValidateReqBody(propertyReviewSchema.createpropertyReviewSchema), propertyReviewController.createPropertyReview);
+    .post(protect, yupValidateReqBody(propertyReviewSchema.createPropertyReviewSchema), propertyReviewController.createPropertyReview);
 
 router.route('/:propertyReviewId')
     .get(protect, propertyReviewController.getPropertyReview)
-    .patch(protect, propertyReviewController.updatePropertyReview)
+    .patch(protect, yupValidateReqBody(propertyReviewSchema.updatePropertyReviewSchema), propertyReviewController.updatePropertyReview)
     .delete(protect, propertyReviewController.deletePropertyReview);
 
 

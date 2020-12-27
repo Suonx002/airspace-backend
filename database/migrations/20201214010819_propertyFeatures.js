@@ -13,9 +13,10 @@ exports.up = async knex => await knex.schema.createTable(tableNames.propertyFeat
     tableDefaultColumns(table, knex);
 
     table.integer('propertyId').unsigned().notNullable();
-    table.foreign('propertyId').references("id").inTable('properties');
+    table.foreign('propertyId').references('id').inTable('properties').onUpdate('cascade').onDelete('cascade');
     table.uuid('userId').notNullable();
-    table.foreign('userId').references('id').inTable('users');
+    table.foreign('userId').references('id').inTable('users').onUpdate('cascade').onDelete('cascade');
+
 });
 
 exports.down = async knex => await knex.schema.dropTableIfExists(tableNames.propertyFeatures);
