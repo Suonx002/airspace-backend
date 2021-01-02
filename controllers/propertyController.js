@@ -34,8 +34,7 @@ exports.createProperty = catchAsync(async (req, res, next) => {
     }
 
 
-    const propertyImageResult = await cloudinaryController.upload(req.file.path, 'airspace');
-
+    const propertyImageResult = await cloudinaryController.upload(req.file.path, 'airspace/properties');
 
     const property = await Property.query().insert({
         slug: slugify(title),
@@ -52,8 +51,6 @@ exports.createProperty = catchAsync(async (req, res, next) => {
         propertyImage: propertyImageResult.url,
         userId: req.user.id,
     });
-
-    // const uploader = async;
 
     return res.status(201).json({
         status: "success",
