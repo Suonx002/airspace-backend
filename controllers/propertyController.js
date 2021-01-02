@@ -1,8 +1,5 @@
 const slugify = require("slugify");
 
-const sharp = require('sharp');
-
-
 const Property = require("../models/Property");
 const cloudinaryController = require('../controllers/cloudinaryController');
 
@@ -28,8 +25,6 @@ exports.createProperty = catchAsync(async (req, res, next) => {
         return next(new AppError('Please upload an image'));
     }
 
-    console.log(req.file);
-
     const propertyExist = await Property.query().where({ title }).first();
 
     if (propertyExist) {
@@ -38,44 +33,33 @@ exports.createProperty = catchAsync(async (req, res, next) => {
         );
     }
 
-    // const test = await cloudinaryController.upload(req.file.path, 'airspace');
 
-    // console.log({ test });
+    const propertyImageResult = await cloudinaryController.upload(req.file.path, 'airspace');
 
-    // const property = await Property.query().insert({
-    //     slug: slugify(title),
-    //     title,
-    //     description,
-    //     address,
-    //     state,
-    //     city,
-    //     bedrooms,
-    //     bathrooms,
-    //     guests,
-    //     zipcode,
-    //     price,
-    //     propertyImage,
-    //     userId: req.user.id,
-    // });
+
+    const property = await Property.query().insert({
+        slug: slugify(title),
+        title,
+        description,
+        address,
+        state,
+        city,
+        bedrooms,
+        bathrooms,
+        guests,
+        zipcode,
+        price,
+        propertyImage: propertyImageResult.url,
+        userId: req.user.id,
+    });
 
     // const uploader = async;
 
     return res.status(201).json({
         status: "success",
         message: "Successfully created new property!",
-        // data: property,
-        data: {
-            title,
-            description,
-            address,
-            state,
-            city,
-            bedrooms,
-            bathrooms,
-            guests,
-            zipcode,
-            price,
-        }
+        data: property,
+
     });
 });
 
