@@ -11,7 +11,7 @@ exports.createPropertySchema = yup.object().shape({
     guests: yup.number().min(1).max(100).required(),
     zipcode: yup.string().length(5).required(),
     price: yup.string().matches(/^\d{0,8}(\.\d{1,2})?$/, 'price must be valid format').required(),
-})
+});
 
 
 exports.updatePropertySchema = yup.object().shape({
@@ -25,4 +25,4 @@ exports.updatePropertySchema = yup.object().shape({
     guests: yup.number().min(1).max(100).required(),
     zipcode: yup.string().length(5).required(),
     price: yup.string().matches(/^\d{0,8}(\.\d{1,2})?$/, 'price must be valid format').required(),
-})
+});

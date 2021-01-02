@@ -9,6 +9,10 @@ const { protect } = require('../middlewares/jwtMethods');
 const propertReviewRouter = require('./propertyReviewRoutes');
 
 
+const multerController = require('../controllers/multerController');
+
+
+
 // allow propertyReviews go through here
 // api/v1/properties/:propertyId/propertyReviews
 router.use('/:propertyId/propertyReviews', propertReviewRouter);
@@ -16,7 +20,10 @@ router.use('/:propertyId/propertyReviews', propertReviewRouter);
 
 router.route('/')
     .get(protect, propertyController.getAllProperties)
-    .post(protect, yupValidateReqBody(propertySchema.createPropertySchema), propertyController.createProperty);
+    .post(protect,
+        multerController.single('propertyImage'),
+        yupValidateReqBody(propertySchema.createPropertySchema),
+        propertyController.createProperty);
 
 router.route('/:propertyId')
     .get(protect, propertyController.getProperty)

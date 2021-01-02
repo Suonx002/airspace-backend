@@ -33,7 +33,7 @@ const globalErrorHandlers = (err, req, res, next) => {
     error.message = err.message;
 
     console.log({
-        error
+        error, err
     });
 
 
