@@ -121,7 +121,7 @@ exports.updateProperty = catchAsync(async (req, res, next) => {
 
     if (req.file) {
         const propertyImageResult = await cloudinaryController.upload(req.file.path, 'airspace/properties');
-        updatedPhoto = propertyImageResult.url;
+        updatedPhoto = propertyImageResult;
 
         // deleting existing property image from cloudinary (takes publicId) ->
         // ex: http://res.cloudinary.com/airspacerental/image/upload/v1609566938/airspace/properties/r1at7buwd63foxvxgpez.png -> /airspace/properties/r1at7buwd63foxvxgpez
@@ -142,7 +142,7 @@ exports.updateProperty = catchAsync(async (req, res, next) => {
         bathrooms,
         guests,
         price,
-        propertyImage: updatedPhoto && updatedPhoto,
+        propertyImage: updatedPhoto && updatedPhoto.url,
         slug: slugify(title),
         updatedAt: currentTimestamp(),
     }).returning('*');

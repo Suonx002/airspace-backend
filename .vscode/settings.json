@@ -1,11 +1,17 @@
 {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "eslint.format.enable": true,
-    "javascript.preferences.quoteStyle": "single",
-    "typescript.preferences.quoteStyle": "single",
-    "prettier.jsxSingleQuote": true,
-    "prettier.singleQuote": true,
-    "javascript.format.semicolons": "insert",
-    "prettier.quoteProps": "consistent"
+  "workbench.colorCustomizations": {
+    "titleBar.activeForeground": "#000",
+    "titleBar.inactiveForeground": "#000000CC",
+    "titleBar.activeBackground": "#1abc9c",
+    "titleBar.inactiveBackground": "#1abc9cc4"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "eslint.format.enable": true,
+  "javascript.preferences.quoteStyle": "single",
+  "typescript.preferences.quoteStyle": "single",
+  "prettier.jsxSingleQuote": true,
+  "prettier.singleQuote": true,
+  "javascript.format.semicolons": "insert",
+  "prettier.quoteProps": "consistent"
 }
