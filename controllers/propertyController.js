@@ -6,6 +6,7 @@ const cloudinaryController = require('../controllers/cloudinaryController');
 const AppError = require("../utils/methods/AppError");
 const catchAsync = require("../utils/methods/catchAsync");
 const currentTimestamp = require("../utils/methods/currentTimestamp");
+const getPublicId = require('../utils/methods/getPublicId');
 
 exports.createProperty = catchAsync(async (req, res, next) => {
     const {
@@ -102,6 +103,8 @@ exports.updateProperty = catchAsync(async (req, res, next) => {
         price,
     } = req.body;
 
+    let updatedPhoto;
+
     const { propertyId } = req.params;
 
     const property = await Property.query().where({ id: propertyId }).first();
@@ -116,6 +119,17 @@ exports.updateProperty = catchAsync(async (req, res, next) => {
         );
     }
 
+    if (req.file) {
+        const propertyImageResult = await cloudinaryController.upload(req.file.path, 'airspace/properties');
+        updatedPhoto = propertyImageResult.url;
+
+        // deleting existing property image from cloudinary (takes publicId) ->
+        // ex: http://res.cloudinary.com/airspacerental/image/upload/v1609566938/airspace/properties/r1at7buwd63foxvxgpez.png -> /airspace/properties/r1at7buwd63foxvxgpez
+
+        const publicId = getPublicId(property.propertyImage);
+        await cloudinaryController.deleteImage(publicId);
+    }
+
 
     const updatedProperty = await Property.query().where({ id: propertyId }).update({
         title,
@@ -128,6 +142,7 @@ exports.updateProperty = catchAsync(async (req, res, next) => {
         bathrooms,
         guests,
         price,
+        propertyImage: updatedPhoto && updatedPhoto,
         slug: slugify(title),
         updatedAt: currentTimestamp(),
     }).returning('*');
@@ -156,6 +171,10 @@ exports.deleteProperty = catchAsync(async (req, res, next) => {
     }
 
     await Property.query().where({ id: propertyId }).del();
+
+    // delete existing propertyImage from property
+    const publicId = getPublicId(property.propertyImage);
+    await cloudinaryController.deleteImage(publicId);
 
     return res.status(200).json({
         status: 'success',

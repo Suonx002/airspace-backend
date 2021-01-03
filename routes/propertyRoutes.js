@@ -27,7 +27,10 @@ router.route('/')
 
 router.route('/:propertyId')
     .get(protect, propertyController.getProperty)
-    .patch(protect, yupValidateReqBody(propertySchema.updatePropertySchema), propertyController.updateProperty)
+    .patch(protect,
+        multerController.single('propertyImage'),
+        yupValidateReqBody(propertySchema.updatePropertySchema),
+        propertyController.updateProperty)
     .delete(protect, propertyController.deleteProperty);
 
 
