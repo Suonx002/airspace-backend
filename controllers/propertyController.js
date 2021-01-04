@@ -9,6 +9,51 @@ const catchAsync = require("../utils/methods/catchAsync");
 const currentTimestamp = require("../utils/methods/currentTimestamp");
 const getPublicId = require('../utils/methods/getPublicId');
 
+// exports.recentProperties = catchAsync(async (req, res, next) => {
+//     const properties = await Property.query().withGraphFetched('[propertyReviews.user, user]')
+//         .modifyGraph('user', builder => { builder.select('firstName', 'lastName', 'username', 'email'); })
+//         .modifyGraph('propertyReviews', builder => { builder.select('title', 'comment', 'rating'); })
+//         .modifyGraph('propertyReviews.user', builder => { builder.select('firstName', 'lastName'); }).orderBy('createdAt', 'asc').orderBy('title', 'asc').limit(6);
+
+//     return res.status(200).json({
+//         status: "success",
+//         length: properties.length,
+//         data: properties,
+//     });
+// });
+
+
+exports.getAllProperties = catchAsync(async (req, res, next) => {
+    const properties = await Property.query().withGraphFetched('[propertyReviews.user, user]')
+        .modifyGraph('user', builder => { builder.select('firstName', 'lastName', 'username', 'email'); })
+        .modifyGraph('propertyReviews', builder => { builder.select('title', 'comment', 'rating'); })
+        .modifyGraph('propertyReviews.user', builder => { builder.select('firstName', 'lastName'); });
+
+
+
+    return res.status(200).json({
+        status: "success",
+        length: properties.length,
+        data: properties,
+    });
+});
+
+exports.getProperty = catchAsync(async (req, res, next) => {
+    const { propertyId } = req.params;
+
+    const property = await Property.query().where({ id: propertyId }).first();
+
+    if (!property) {
+        return next(new AppError("There is no property with this ID", 400));
+    }
+
+    return res.status(200).json({
+        status: "success",
+        data: property,
+    });
+});
+
+
 exports.createProperty = catchAsync(async (req, res, next) => {
     let {
         title,
@@ -65,34 +110,6 @@ exports.createProperty = catchAsync(async (req, res, next) => {
         message: "Successfully created new property!",
         data: property,
 
-    });
-});
-
-exports.getAllProperties = catchAsync(async (req, res, next) => {
-    const properties = await Property.query().withGraphFetched('[propertyReviews.user, user]')
-        .modifyGraph('user', builder => { builder.select('firstName', 'lastName', 'username', 'email'); })
-        .modifyGraph('propertyReviews', builder => { builder.select('title', 'comment', 'rating'); })
-        .modifyGraph('propertyReviews.user', builder => { builder.select('firstName', 'lastName'); });
-
-    return res.status(200).json({
-        status: "success",
-        length: properties.length,
-        data: properties,
-    });
-});
-
-exports.getProperty = catchAsync(async (req, res, next) => {
-    const { propertyId } = req.params;
-
-    const property = await Property.query().where({ id: propertyId }).first();
-
-    if (!property) {
-        return next(new AppError("There is no property with this ID", 400));
-    }
-
-    return res.status(200).json({
-        status: "success",
-        data: property,
     });
 });
 
