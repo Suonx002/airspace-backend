@@ -4,6 +4,8 @@ const PropertyReview = require("../models/PropertyReview");
 const AppError = require("../utils/methods/AppError");
 const catchAsync = require("../utils/methods/catchAsync");
 const currentTimestamp = require("../utils/methods/currentTimestamp");
+const lowerString = require('../utils/methods/lowercaseString');
+
 
 
 exports.getAllPropertyReviews = catchAsync(async (req, res, next) => {
@@ -46,7 +48,9 @@ exports.getPropertyReview = catchAsync(async (req, res, next) => {
 exports.createPropertyReview = catchAsync(async (req, res, next) => {
     const { propertyId } = req.params;
 
-    const { title, comment, rating } = req.body;
+    let { title, comment, rating } = req.body;
+    title = lowerString(title);
+    comment = lowerString(comment);
 
     if (!propertyId) {
         return next(new AppError('Please provide property id', 400));
@@ -92,7 +96,9 @@ exports.createPropertyReview = catchAsync(async (req, res, next) => {
 exports.updatePropertyReview = catchAsync(async (req, res, next) => {
     const { propertyId, propertyReviewId } = req.params;
 
-    const { title, comment, rating } = req.body;
+    let { title, comment, rating } = req.body;
+    title = lowerString(title);
+    comment = lowerString(comment);
 
 
     if (!propertyId || !propertyReviewId) {

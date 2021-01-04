@@ -1,4 +1,4 @@
-const catchAsync = require('../utils/methods/catchAsync')
+const catchAsync = require('../utils/methods/catchAsync');
 
 
 module.exports = schema => catchAsync(async (req, res, next) => {
@@ -7,4 +7,4 @@ module.exports = schema => catchAsync(async (req, res, next) => {
     req.body = validateBody;
 
     next();
-})
+});

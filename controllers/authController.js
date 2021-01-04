@@ -2,6 +2,7 @@ const { v4: uuidv4 } = require('uuid');
 
 const User = require('../models/User');
 
+const lowercaseString = require('../utils/methods/lowercaseString');
 const jwtMethods = require('../middlewares/jwtMethods');
 const bcryptMethods = require('../utils/methods/bcryptMethods');
 const AppError = require('../utils/methods/AppError');
@@ -10,7 +11,14 @@ const catchAsync = require('../utils/methods/catchAsync');
 
 exports.signup = catchAsync(async (req, res, next) => {
 
-    const { username, email, firstName, lastName, password } = req.body;
+    let { username, email, firstName, lastName, password } = req.body;
+
+    // lowercase 
+    username = lowercaseString(username);
+    email = lowercaseString(email);
+    firstName = lowercaseString(firstName);
+    lastName = lowercaseString(lastName);
+
     const id = uuidv4();
 
     const userExisted = await User.query().where({ username }).orWhere({ email }).first();
@@ -33,7 +41,8 @@ exports.signup = catchAsync(async (req, res, next) => {
 
 
     // remove password from output
-    newUser.password = undefined;
+    const { password: currentPassword, createdAt, updatedAt, ...rest } = newUser;
+
 
     // sign token 
     const token = jwtMethods.signToken(username);
@@ -42,13 +51,16 @@ exports.signup = catchAsync(async (req, res, next) => {
     return res.status(201).json({
         status: 'success',
         token,
-        data: newUser
+        data: rest
     });
 });
 
 exports.login = catchAsync(async (req, res, next) => {
 
-    const { email, password } = req.body;
+    let { email, password } = req.body;
+
+    // lowercase 
+    email = lowercaseString(email);
 
     const user = await User.query().where({ email }).first();
 
@@ -63,8 +75,8 @@ exports.login = catchAsync(async (req, res, next) => {
         return next(new AppError('Email or password is invalid', 400));
     }
 
-    // hide password
-    user.password = undefined;
+    // hide password and other sentitive fields
+    const { password: currentPassword, createdAt, updatedAt, ...rest } = user;
 
 
     // sign token 
@@ -73,7 +85,7 @@ exports.login = catchAsync(async (req, res, next) => {
     return res.status(200).json({
         status: 'success',
         token,
-        data: user,
+        data: rest,
     });
 
 });

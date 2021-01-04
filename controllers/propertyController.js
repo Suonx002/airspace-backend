@@ -3,13 +3,14 @@ const slugify = require("slugify");
 const Property = require("../models/Property");
 const cloudinaryController = require('../controllers/cloudinaryController');
 
+const lowerString = require('../utils/methods/lowercaseString');
 const AppError = require("../utils/methods/AppError");
 const catchAsync = require("../utils/methods/catchAsync");
 const currentTimestamp = require("../utils/methods/currentTimestamp");
 const getPublicId = require('../utils/methods/getPublicId');
 
 exports.createProperty = catchAsync(async (req, res, next) => {
-    const {
+    let {
         title,
         description,
         address,
@@ -21,6 +22,12 @@ exports.createProperty = catchAsync(async (req, res, next) => {
         zipcode,
         price,
     } = req.body;
+
+    title = lowerString(title);
+    description = lowerString(description);
+    address = lowerString(address);
+    state = lowerString(state);
+    city = lowerString(city);
 
     if (!req.file) {
         return next(new AppError('Please upload an image'));
@@ -90,7 +97,7 @@ exports.getProperty = catchAsync(async (req, res, next) => {
 });
 
 exports.updateProperty = catchAsync(async (req, res, next) => {
-    const {
+    let {
         title,
         description,
         address,
@@ -102,6 +109,12 @@ exports.updateProperty = catchAsync(async (req, res, next) => {
         guests,
         price,
     } = req.body;
+
+    title = lowerString(title);
+    description = lowerString(description);
+    address = lowerString(address);
+    state = lowerString(state);
+    city = lowerString(city);
 
     let updatedPhoto;
 

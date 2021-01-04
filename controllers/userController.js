@@ -28,13 +28,9 @@ exports.getMe = catchAsync(async (req, res, next) => {
     const { password, createdAt, updatedAt, ...newUser } = user;
 
 
-
     return res.status(200).json({
         status: 'success',
         data: newUser
     });
-
-
-
 
 });

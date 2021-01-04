@@ -19,14 +19,14 @@ router.use('/:propertyId/propertyReviews', propertReviewRouter);
 
 
 router.route('/')
-    .get(protect, propertyController.getAllProperties)
+    .get(propertyController.getAllProperties)
     .post(protect,
         multerController.single('propertyImage'),
         yupValidateReqBody(propertySchema.createPropertySchema),
         propertyController.createProperty);
 
 router.route('/:propertyId')
-    .get(protect, propertyController.getProperty)
+    .get(propertyController.getProperty)
     .patch(protect,
         multerController.single('propertyImage'),
         yupValidateReqBody(propertySchema.updatePropertySchema),
