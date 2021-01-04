@@ -10,7 +10,7 @@ const tableDefaultColumns = require('../../utils/methods/defaultTableColumns');
 exports.up = async knex => await knex.schema.createTable(tableNames.propertyReviews, table => {
     table.increments();
     table.string('title').notNullable();
-    table.enu('rating', [1, 2, 3, 4, 5]).notNullable();
+    table.integer('rating').notNullable();
     table.text('comment').notNullable();
     tableDefaultColumns(table, knex);
 
