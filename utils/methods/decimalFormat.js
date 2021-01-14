@@ -1,0 +1,1 @@
+module.exports = str => Number(parseFloat(str).toFixed(2));

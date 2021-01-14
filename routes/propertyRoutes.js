@@ -18,6 +18,8 @@ const multerController = require('../controllers/multerController');
 router.use('/:propertyId/propertyReviews', propertReviewRouter);
 
 
+router.get('/homepage', propertyController.homepageProperties);
+
 router.route('/')
     .get(propertyController.getAllProperties)
     .post(protect,

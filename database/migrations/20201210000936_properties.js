@@ -23,7 +23,7 @@ exports.up = async knex => await knex.schema.createTable(tableNames.properties, 
     table.integer('bedrooms').notNullable();
     table.integer('bathrooms').notNullable();
     table.integer('guests').notNullable();
-    table.float('price', 14, 2).notNullable();
+    table.float('price').notNullable();
 
 
     table.uuid('userId').unsigned().notNullable();

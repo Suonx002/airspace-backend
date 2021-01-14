@@ -1,6 +1,7 @@
 const slugify = require("slugify");
 
 const Property = require("../models/Property");
+const PropertyReview = require('../models/propertyReview');
 const cloudinaryController = require('../controllers/cloudinaryController');
 
 const lowerString = require('../utils/methods/lowercaseString');
@@ -8,19 +9,38 @@ const AppError = require("../utils/methods/AppError");
 const catchAsync = require("../utils/methods/catchAsync");
 const currentTimestamp = require("../utils/methods/currentTimestamp");
 const getPublicId = require('../utils/methods/getPublicId');
+const decimalFormat = require('../utils/methods/decimalFormat');
 
-// exports.recentProperties = catchAsync(async (req, res, next) => {
-//     const properties = await Property.query().withGraphFetched('[propertyReviews.user, user]')
-//         .modifyGraph('user', builder => { builder.select('firstName', 'lastName', 'username', 'email'); })
-//         .modifyGraph('propertyReviews', builder => { builder.select('title', 'comment', 'rating'); })
-//         .modifyGraph('propertyReviews.user', builder => { builder.select('firstName', 'lastName'); }).orderBy('createdAt', 'asc').orderBy('title', 'asc').limit(6);
+exports.homepageProperties = catchAsync(async (req, res, next) => {
 
-//     return res.status(200).json({
-//         status: "success",
-//         length: properties.length,
-//         data: properties,
-//     });
-// });
+    const queryBuilder = (query) => {
+
+        return query.limit(10)
+            .withGraphFetched('[propertyReviews.user, user]')
+            .modifyGraph('user', builder => { builder.select('firstName', 'lastName', 'username', 'email'); })
+            .modifyGraph('propertyReviews', builder => { builder.select('title', 'comment', 'rating'); })
+            .modifyGraph('propertyReviews.user', builder => { builder.select('firstName', 'lastName'); });
+    };
+
+
+    const recommendedProperties = await queryBuilder(Property.query().where('price', '>', 250).andWhere('price', '<', 1000));
+    const latestProperties = await queryBuilder(Property.query().orderBy('createdAt', 'desc'));
+    const premiumProperties = await queryBuilder(Property.query().orderBy('createdAt', 'desc').where('price', '>', 1000));
+
+    return res.status(200).json({
+        status: "success",
+        length: {
+            recommendedPropertiesLength: recommendedProperties.length,
+            latestProperties: latestProperties.length,
+            premiumProperties: premiumProperties.length
+        },
+        data: {
+            recommendedProperties,
+            latestProperties,
+            premiumProperties
+        }
+    });
+});
 
 
 exports.getAllProperties = catchAsync(async (req, res, next) => {
@@ -28,6 +48,7 @@ exports.getAllProperties = catchAsync(async (req, res, next) => {
         .modifyGraph('user', builder => { builder.select('firstName', 'lastName', 'username', 'email'); })
         .modifyGraph('propertyReviews', builder => { builder.select('title', 'comment', 'rating'); })
         .modifyGraph('propertyReviews.user', builder => { builder.select('firstName', 'lastName'); });
+
 
 
 
@@ -73,6 +94,8 @@ exports.createProperty = catchAsync(async (req, res, next) => {
     address = lowerString(address);
     state = lowerString(state);
     city = lowerString(city);
+    price = decimalFormat(price);
+
 
     if (!req.file) {
         return next(new AppError('Please upload an image'));
@@ -132,6 +155,10 @@ exports.updateProperty = catchAsync(async (req, res, next) => {
     address = lowerString(address);
     state = lowerString(state);
     city = lowerString(city);
+    price = decimalFormat(price);
+
+
+
 
     let updatedPhoto;
 
