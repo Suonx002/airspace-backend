@@ -23,7 +23,7 @@ exports.homepageProperties = catchAsync(async (req, res, next) => {
     };
 
 
-    const recommendedProperties = await queryBuilder(Property.query().where('price', '>', 250).andWhere('price', '<', 1000));
+    const recommendedProperties = await queryBuilder(Property.query().where('price', '>', 150).andWhere('price', '<', 1000));
     const latestProperties = await queryBuilder(Property.query().orderBy('createdAt', 'desc'));
     const premiumProperties = await queryBuilder(Property.query().orderBy('createdAt', 'desc').where('price', '>', 1000));
 
