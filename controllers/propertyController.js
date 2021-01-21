@@ -11,15 +11,20 @@ const currentTimestamp = require("../utils/methods/currentTimestamp");
 const getPublicId = require('../utils/methods/getPublicId');
 const decimalFormat = require('../utils/methods/decimalFormat');
 
+
+
+
+
+
 exports.homepageProperties = catchAsync(async (req, res, next) => {
 
     const queryBuilder = (query) => {
 
         return query.limit(10)
             .withGraphFetched('[propertyReviews.user, user]')
-            .modifyGraph('user', builder => { builder.select('firstName', 'lastName', 'username', 'email'); })
+            .modifyGraph('user', builder => { builder.select('firstName', 'lastName', 'username', 'email', 'profileImage'); })
             .modifyGraph('propertyReviews', builder => { builder.select('title', 'comment', 'rating'); })
-            .modifyGraph('propertyReviews.user', builder => { builder.select('firstName', 'lastName'); });
+            .modifyGraph('propertyReviews.user', builder => { builder.select('firstName', 'lastName', 'profileImage'); });
     };
 
 
@@ -45,9 +50,9 @@ exports.homepageProperties = catchAsync(async (req, res, next) => {
 
 exports.getAllProperties = catchAsync(async (req, res, next) => {
     const properties = await Property.query().withGraphFetched('[propertyReviews.user, user]')
-        .modifyGraph('user', builder => { builder.select('firstName', 'lastName', 'username', 'email'); })
+        .modifyGraph('user', builder => { builder.select('firstName', 'lastName', 'username', 'email', 'profileImage'); })
         .modifyGraph('propertyReviews', builder => { builder.select('title', 'comment', 'rating'); })
-        .modifyGraph('propertyReviews.user', builder => { builder.select('firstName', 'lastName'); });
+        .modifyGraph('propertyReviews.user', builder => { builder.select('firstName', 'lastName', 'profileImage'); });
 
 
 
@@ -62,7 +67,10 @@ exports.getAllProperties = catchAsync(async (req, res, next) => {
 exports.getProperty = catchAsync(async (req, res, next) => {
     const { propertyId } = req.params;
 
-    const property = await Property.query().where({ id: propertyId }).first();
+    const property = await Property.query().where({ id: propertyId }).withGraphFetched('[propertyReviews.user, user]')
+        .modifyGraph('user', builder => { builder.select('firstName', 'lastName', 'username', 'email', 'profileImage'); })
+        .modifyGraph('propertyReviews', builder => { builder.select('title', 'comment', 'rating'); })
+        .modifyGraph('propertyReviews.user', builder => { builder.select('firstName', 'lastName', 'profileImage'); }).first();
 
     if (!property) {
         return next(new AppError("There is no property with this ID", 400));
@@ -95,6 +103,8 @@ exports.createProperty = catchAsync(async (req, res, next) => {
     state = lowerString(state);
     city = lowerString(city);
     price = decimalFormat(price);
+
+
 
 
     if (!req.file) {
