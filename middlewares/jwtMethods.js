@@ -34,7 +34,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 
 
     // check if user exist
-    const userExisted = await User.query().where('username', decoded.username).first().select('id', 'username', 'email', 'firstName', 'lastName', 'role');
+    const userExisted = await User.query().where('username', decoded.username).first().select('id', 'username', 'email', 'firstName', 'lastName', 'role', 'profileImage');
 
     if (!userExisted) {
         return next(new AppError('User is no longer exist, please create a new one', 404));

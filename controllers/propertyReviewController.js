@@ -85,10 +85,20 @@ exports.createPropertyReview = catchAsync(async (req, res, next) => {
         userId: req.user.id
     });
 
+    const { userId, ...rest } = propertyReview;
+
 
     return res.status(201).json({
         status: 'success',
-        data: propertyReview
+        data: {
+            ...rest,
+            user: {
+                firstName: req.user.firstName,
+                lastName: req.user.lastName,
+                profileImage: req.user.profileImage
+            }
+
+        }
     });
 
 });

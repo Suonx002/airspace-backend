@@ -23,7 +23,7 @@ exports.homepageProperties = catchAsync(async (req, res, next) => {
         return query.limit(10)
             .withGraphFetched('[propertyReviews.user, user]')
             .modifyGraph('user', builder => { builder.select('firstName', 'lastName', 'username', 'email', 'profileImage'); })
-            .modifyGraph('propertyReviews', builder => { builder.select('title', 'comment', 'rating'); })
+            .modifyGraph('propertyReviews', builder => { builder.select('id', 'title', 'comment', 'rating'); })
             .modifyGraph('propertyReviews.user', builder => { builder.select('firstName', 'lastName', 'profileImage'); });
     };
 
@@ -51,7 +51,7 @@ exports.homepageProperties = catchAsync(async (req, res, next) => {
 exports.getAllProperties = catchAsync(async (req, res, next) => {
     const properties = await Property.query().withGraphFetched('[propertyReviews.user, user]')
         .modifyGraph('user', builder => { builder.select('firstName', 'lastName', 'username', 'email', 'profileImage'); })
-        .modifyGraph('propertyReviews', builder => { builder.select('title', 'comment', 'rating'); })
+        .modifyGraph('propertyReviews', builder => { builder.select('id', 'title', 'comment', 'rating'); })
         .modifyGraph('propertyReviews.user', builder => { builder.select('firstName', 'lastName', 'profileImage'); });
 
 
@@ -69,7 +69,7 @@ exports.getProperty = catchAsync(async (req, res, next) => {
 
     const property = await Property.query().where({ id: propertyId }).withGraphFetched('[propertyReviews.user, user]')
         .modifyGraph('user', builder => { builder.select('firstName', 'lastName', 'username', 'email', 'profileImage'); })
-        .modifyGraph('propertyReviews', builder => { builder.select('title', 'comment', 'rating'); })
+        .modifyGraph('propertyReviews', builder => { builder.select('id', 'title', 'comment', 'rating'); })
         .modifyGraph('propertyReviews.user', builder => { builder.select('firstName', 'lastName', 'profileImage'); }).first();
 
     if (!property) {
