@@ -69,7 +69,7 @@ exports.getProperty = catchAsync(async (req, res, next) => {
 
     const property = await Property.query().where({ id: propertyId }).withGraphFetched('[propertyReviews.user, user]')
         .modifyGraph('user', builder => { builder.select('firstName', 'lastName', 'username', 'email', 'profileImage'); })
-        .modifyGraph('propertyReviews', builder => { builder.select('id', 'title', 'comment', 'rating'); })
+        .modifyGraph('propertyReviews', builder => { builder.select('id', 'title', 'comment', 'rating', 'propertyId'); })
         .modifyGraph('propertyReviews.user', builder => { builder.select('firstName', 'lastName', 'profileImage'); }).first();
 
     if (!property) {
@@ -167,7 +167,18 @@ exports.updateProperty = catchAsync(async (req, res, next) => {
     city = lowerString(city);
     price = decimalFormat(price);
 
-
+    console.log({
+        title,
+        description,
+        address,
+        city,
+        state,
+        zipcode,
+        bedrooms,
+        bathrooms,
+        guests,
+        price,
+    });
 
 
     let updatedPhoto;
@@ -198,7 +209,7 @@ exports.updateProperty = catchAsync(async (req, res, next) => {
     }
 
 
-    const updatedProperty = await Property.query().where({ id: propertyId }).update({
+    await Property.query().where({ id: propertyId }).update({
         title,
         description,
         address,
@@ -212,12 +223,17 @@ exports.updateProperty = catchAsync(async (req, res, next) => {
         propertyImage: updatedPhoto && updatedPhoto.url,
         slug: slugify(title),
         updatedAt: currentTimestamp(),
-    }).returning('*');
+    });
+
+    const getUpdatedPropertyWithChildren = await Property.query().where({ id: propertyId }).withGraphFetched('[propertyReviews.user, user]')
+        .modifyGraph('user', builder => { builder.select('firstName', 'lastName', 'username', 'email', 'profileImage'); })
+        .modifyGraph('propertyReviews', builder => { builder.select('id', 'title', 'comment', 'rating', 'propertyId'); })
+        .modifyGraph('propertyReviews.user', builder => { builder.select('firstName', 'lastName', 'profileImage'); }).first();
 
     return res.status(200).json({
         status: "success",
         message: 'Successfully updated property details!',
-        data: updatedProperty[0]
+        data: getUpdatedPropertyWithChildren
     });
 });
 
