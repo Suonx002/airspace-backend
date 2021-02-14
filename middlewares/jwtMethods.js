@@ -23,6 +23,10 @@ exports.protect = catchAsync(async (req, res, next) => {
 
     // check if user provide bearer token
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+
+        console.log({
+            header: req.headers.authorization
+        });
         token = req.headers.authorization.split(' ')[1];
     }
 
@@ -44,4 +48,4 @@ exports.protect = catchAsync(async (req, res, next) => {
 
     next();
 
-}); 
+});

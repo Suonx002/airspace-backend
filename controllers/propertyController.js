@@ -22,9 +22,9 @@ exports.homepageProperties = catchAsync(async (req, res, next) => {
 
         return query.limit(10)
             .withGraphFetched('[propertyReviews.user, user]')
-            .modifyGraph('user', builder => { builder.select('firstName', 'lastName', 'username', 'email', 'profileImage'); })
+            .modifyGraph('user', builder => { builder.select('id', 'firstName', 'lastName', 'username', 'email', 'profileImage'); })
             .modifyGraph('propertyReviews', builder => { builder.select('id', 'title', 'comment', 'rating'); })
-            .modifyGraph('propertyReviews.user', builder => { builder.select('firstName', 'lastName', 'profileImage'); });
+            .modifyGraph('propertyReviews.user', builder => { builder.select('id', 'firstName', 'lastName', 'profileImage'); });
     };
 
 
@@ -50,9 +50,9 @@ exports.homepageProperties = catchAsync(async (req, res, next) => {
 
 exports.getAllProperties = catchAsync(async (req, res, next) => {
     const properties = await Property.query().withGraphFetched('[propertyReviews.user, user]')
-        .modifyGraph('user', builder => { builder.select('firstName', 'lastName', 'username', 'email', 'profileImage'); })
+        .modifyGraph('user', builder => { builder.select('id', 'firstName', 'lastName', 'username', 'email', 'profileImage'); })
         .modifyGraph('propertyReviews', builder => { builder.select('id', 'title', 'comment', 'rating'); })
-        .modifyGraph('propertyReviews.user', builder => { builder.select('firstName', 'lastName', 'profileImage'); });
+        .modifyGraph('propertyReviews.user', builder => { builder.select('id', 'firstName', 'lastName', 'profileImage'); });
 
 
 
@@ -68,9 +68,9 @@ exports.getProperty = catchAsync(async (req, res, next) => {
     const { propertyId } = req.params;
 
     const property = await Property.query().where({ id: propertyId }).withGraphFetched('[propertyReviews.user, user]')
-        .modifyGraph('user', builder => { builder.select('firstName', 'lastName', 'username', 'email', 'profileImage'); })
+        .modifyGraph('user', builder => { builder.select('id', 'firstName', 'lastName', 'username', 'email', 'profileImage'); })
         .modifyGraph('propertyReviews', builder => { builder.select('id', 'title', 'comment', 'rating', 'propertyId'); })
-        .modifyGraph('propertyReviews.user', builder => { builder.select('firstName', 'lastName', 'profileImage'); }).first();
+        .modifyGraph('propertyReviews.user', builder => { builder.select('id', 'firstName', 'lastName', 'profileImage'); }).first();
 
     if (!property) {
         return next(new AppError("There is no property with this ID", 400));
@@ -226,9 +226,9 @@ exports.updateProperty = catchAsync(async (req, res, next) => {
     });
 
     const getUpdatedPropertyWithChildren = await Property.query().where({ id: propertyId }).withGraphFetched('[propertyReviews.user, user]')
-        .modifyGraph('user', builder => { builder.select('firstName', 'lastName', 'username', 'email', 'profileImage'); })
+        .modifyGraph('user', builder => { builder.select('id', 'firstName', 'lastName', 'username', 'email', 'profileImage'); })
         .modifyGraph('propertyReviews', builder => { builder.select('id', 'title', 'comment', 'rating', 'propertyId'); })
-        .modifyGraph('propertyReviews.user', builder => { builder.select('firstName', 'lastName', 'profileImage'); }).first();
+        .modifyGraph('propertyReviews.user', builder => { builder.select('id', 'firstName', 'lastName', 'profileImage'); }).first();
 
     return res.status(200).json({
         status: "success",

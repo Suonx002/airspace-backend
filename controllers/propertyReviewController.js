@@ -12,7 +12,7 @@ exports.getAllPropertyReviews = catchAsync(async (req, res, next) => {
 
     const propertyReviews = await PropertyReview.query().withGraphFetched('[user, property.user]')
         .modifyGraph('user', builder => { builder.select("firstName", 'lastName'); })
-        .modifyGraph('property.user', builder => { builder.select('firstName', 'lastName', 'profileImage'); });
+        .modifyGraph('property.user', builder => { builder.select('id', 'firstName', 'lastName', 'profileImage'); });
 
     return res.status(200).json({
         status: 'success',
@@ -31,7 +31,7 @@ exports.getPropertyReview = catchAsync(async (req, res, next) => {
     const propertyReview = await PropertyReview.query()
         .where(({ id: propertyReviewId, propertyId }))
         .withGraphFetched('user')
-        .modifyGraph('user', builder => { builder.select('firstName', 'lastName', 'profileImage'); })
+        .modifyGraph('user', builder => { builder.select('id', 'firstName', 'lastName', 'profileImage'); })
         .first();
 
     if (!propertyReview) {
