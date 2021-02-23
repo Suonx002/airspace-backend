@@ -1,7 +1,7 @@
 const slugify = require("slugify");
 
 const Property = require("../models/Property");
-const PropertyReview = require('../models/propertyReview');
+const PropertyReview = require('../models/PropertyReview');
 const cloudinaryController = require('../controllers/cloudinaryController');
 
 const lowerString = require('../utils/methods/lowercaseString');
