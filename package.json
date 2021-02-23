@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "prestart": "node index.js",
     "start": "node index.js",
     "server": "nodemon index.js",
     "knex:make": "knex migrate:make --knexfile ./knexfile.js",
