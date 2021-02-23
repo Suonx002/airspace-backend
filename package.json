@@ -4,15 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prestart": "node index.js",
-    "start": "node index.js",
     "server": "nodemon index.js",
     "knex:make": "knex migrate:make --knexfile ./knexfile.js",
     "knex:migrate": "knex migrate:latest --knexfile ./knexfile.js",
     "knex:rollback": "knex migrate:rollback --knexfile ./knexfile.js",
     "knex:seed": "knex seed:run --knexfile ./knexfile.js",
     "test": "jest --force-exit --detectOpenHandles",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false"
+    "start": "node index.js"
   },
   "engines": {
     "node": "^12",
