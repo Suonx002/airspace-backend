@@ -1,4 +1,7 @@
+
 const BaseModel = require('./Base');
+const Property = require('./Property');
+const PropertyReview = require('./PropertyReview');
 
 const tableNames = require('../utils/constants/tableNames');
 
@@ -11,8 +14,7 @@ class User extends BaseModel {
 
     static get relationMappings() {
 
-        const Property = require('./Property');
-        const PropertyReview = require('./PropertyReview');
+
 
         return {
             properties: {
