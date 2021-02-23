@@ -11,7 +11,8 @@
     "knex:migrate": "knex migrate:latest --knexfile ./knexfile.js",
     "knex:rollback": "knex migrate:rollback --knexfile ./knexfile.js",
     "knex:seed": "knex seed:run --knexfile ./knexfile.js",
-    "test": "jest --force-exit --detectOpenHandles"
+    "test": "jest --force-exit --detectOpenHandles",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false"
   },
   "engines": {
     "node": "^12",
