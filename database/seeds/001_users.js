@@ -72,4 +72,4 @@ exports.seed = async knex => {
     } catch (err) {
         console.log('Something went wrong with seeding users');
     }
-}; 
+};

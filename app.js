@@ -3,11 +3,14 @@ const express = require('express');
 const morgan = require('morgan');
 const compression = require('compression');
 const helmet = require('helmet');
+const cors = require('cors');
 
 const dotenv = require('dotenv').config({ path: path.resolve(__dirname + '/configs.env') });
 
 const app = express();
 const db = require('./database/connectDB');
+
+
 
 
 const AppError = require('./utils/methods/AppError');
@@ -19,6 +22,8 @@ const apiRouter = require('./routes');
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
+
+app.use(cors());
 
 app.use(compression());
 app.use(helmet());
@@ -47,3 +52,5 @@ app.all('*', (req, res, next) => {
 app.use(globalErrorHandlers);
 
 module.exports = app;
+
+

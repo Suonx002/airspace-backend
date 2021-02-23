@@ -62,6 +62,10 @@ exports.createPropertyReview = catchAsync(async (req, res, next) => {
         return next(new AppError('There is no property with this ID', 400));
     }
 
+    // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFteSIsImlhdCI6MTYxNDA1MTY5NiwiZXhwIjoxNjE0MTM4MDk2fQ.zqcya2ARWzQGckwLO_yOzshb1fMaiBJerQSi_3n-ofI
+
+
+
     // property owner is not allow to leave a review
     if (req.user.id === property.userId) {
         return next(new AppError('Owner cannot leave review on their own property', 400));
