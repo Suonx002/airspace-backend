@@ -51,7 +51,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     return res.status(201).json({
         status: 'success',
         token,
-        data: rest
+        data: { ...rest, role: 'user' }
     });
 });
 
@@ -75,8 +75,14 @@ exports.login = catchAsync(async (req, res, next) => {
         return next(new AppError('Email or password is invalid', 400));
     }
 
+
+
+
     // hide password and other sentitive fields
     const { password: currentPassword, createdAt, updatedAt, ...rest } = user;
+
+
+
 
 
     // sign token 
