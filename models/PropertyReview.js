@@ -12,6 +12,8 @@ class PropertyReview extends BaseModel {
     static get relationMappings() {
         const Property = require('./Property');
         const User = require('./User');
+
+
         return {
             property: {
                 relation: BaseModel.BelongsToOneRelation,
